@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="Styles.css">
+    <title>Login Page</title>
+</head>
+<body>
+<header>
+    <div style="text-align: center;">Name</div>
+</header>
+
+<div class="boxDiv showFromRight" id="loginDiv">
+    <form>
+        <label>Username</label>
+        <input type="text">
+        <lable>Password</lable>
+        <input type="password">
+        <button class="login">Login</button>
+        <br>
+    </form>
+    <button onclick="SwapToRegister()">Register</button>
+</div>
+
+<div id="registerDiv" class="boxDiv hideOnLeft" style="top: -120px">
+    <form>
+        <label>Create Username</label>
+        <input type="text">
+        <label>Create Password</label>
+        <input type="password">
+        <button class="create">Create User</button>
+    </form>
+    <button onclick="SwapToLogin()">Have An Account?</button>
+</div>
+
+<div class="description">
+    <p>Description about our project</p>
+</div>
+</body>
+</html>
+<script>
+
+    function SwapToRegister() {
+        document.getElementById("loginDiv").classList.remove("showFromRight")
+        document.getElementById("loginDiv").classList.add("hideOnRight")
+        document.getElementById("registerDiv").classList.remove("hideOnLeft")
+        document.getElementById("registerDiv").classList.add("showFromLeft")
+    }
+    function SwapToLogin() {
+        document.getElementById("loginDiv").classList.remove("hideOnRight")
+        document.getElementById("loginDiv").classList.add("showFromRight")
+        document.getElementById("registerDiv").classList.remove("showFromLeft")
+        document.getElementById("registerDiv").classList.add("hideOnLeft")
+    }
+
+</script>
