@@ -58,6 +58,15 @@ td{
     width: 33%;
 }
 
+.titles{
+    font-size: 20px;
+    color: green;
+}
+
+.innertext{
+    font-size: 16px;
+    color: black;
+}
 
 
 .hideOnRight{
