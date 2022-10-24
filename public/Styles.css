@@ -68,6 +68,10 @@ td{
     color: black;
 }
 
+.checkboxes{
+    visibility: visible;
+}
+
 
 .hideOnRight{
     animation: slideRightHide 1s ease-in-out;
