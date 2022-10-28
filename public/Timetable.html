@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Timetable</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous">
-
-        function test{
-
-        }
     </script>
 </head>
-<body>
+<body onload="LoadTimetable()">
 <div class="container">
     <div class="row">
         <div class="col fs-1 text-center">Schedueler</div>
@@ -22,7 +19,7 @@
             <table class="table table-bordered">
                 <thread>
                     <tr>
-                        <th scope="col" onclick="test()" ;>Monday</th>
+                        <th scope="col">Monday</th>
                         <th scope="col">Tuesday</th>
                         <th scope="col">Wednesday</th>
                         <th scope="col">Thursday</th>
@@ -71,10 +68,52 @@
     </div>
     <div class="row">
         <div class="col">
-            <button type="button" class="btn btn-secondary">Edit</button>
+            <button type="button" class="btn btn-secondary">Save</button> <!--probalby should be centered-->
         </div>
     </div>
 </div>
-</div>
 </body>
 </html>
+
+<script>
+    function LoadTimetable(){
+        let thList = document.getElementsByTagName("th");
+        for (const key in thList) {
+            const th = thList[key];
+            if(th.innerHTML != ""){
+                continue;//ignore thes with stuff already inside
+            }
+            th.style.backgroundColor = "green";
+
+
+            let input = document.createElement("input");
+            input.value="Free"
+            input.style.backgroundColor = th.style.backgroundColor
+            input.style.width = "85%"
+            input.disabled = true;
+
+
+            let btn = document.createElement("button");
+            btn.innerHTML="x"
+            btn.onclick = function (){SwapStatus(th,btn,input)}
+            th.append(input)
+            th.appendChild(btn);
+        }
+    }
+    function SwapStatus(th,btn,input){
+        if (th.style.backgroundColor == "green"){
+            th.style.backgroundColor = "red"
+            btn.innerHTML="✓"
+            input.style.backgroundColor = th.style.backgroundColor
+            input.disabled = false;
+        }
+        else{
+            th.style.backgroundColor = "green"
+            btn.innerHTML="x"
+            input.style.backgroundColor = th.style.backgroundColor
+            input.value = "Free"
+            input.disabled = true;
+        }
+    }
+
+</script>
