@@ -16,7 +16,7 @@
               <router-link to="/" class="nav-link">Home</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/whos_on" class="nav-link" >Friends</router-link>
+              <router-link to="/friends" class="nav-link" >Friends</router-link>
             </li>
           </ul>
           <form class="d-flex">
