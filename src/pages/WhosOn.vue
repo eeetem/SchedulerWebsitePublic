@@ -37,15 +37,15 @@ import Navbar from '../components/Navbar.vue'
       <div class="col-sm-4 col-md-4 col-lg-3 friends" align="left">
         <h1> Friends!</h1>
         <div>
-          <img src="egg.jpg" class="profile_pics" alt="Chania" >
+          <img src="../assets/egg.jpg" class="profile_pics" alt="Chania" >
           <h6>Aaron</h6>
         </div><br>
         <div>
-          <img src="Grannygun.jpg" class="profile_pics" alt="Chania" >
+          <img src="../assets/Grannygun.jpg" class="profile_pics" alt="Chania" >
           <h6>Stephen</h6>
         </div> <br>
         <div>
-          <img src="img_chania.jpg" class="profile_pics" alt="Chania" >
+          <img src="../assets/img_chania.jpg" class="profile_pics" alt="Chania" >
           <h6>Dennis</h6>
         </div><br>
 

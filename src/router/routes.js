@@ -1,4 +1,4 @@
-function loadPage(component) {
+export function loadPage(component) {
 // '@' is aliased to src/components
     return () => import(/* webpackChunkName: "[request]" */
         `@/pages/${component}.vue`)
