@@ -18,6 +18,7 @@ export default {
 }
 </script>
 <template>
+  <header>
     <Navbar/>
   </header>
   <div class="row">
