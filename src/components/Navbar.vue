@@ -25,7 +25,7 @@
           </form>
           <div class="btn-group">
             <router-link to="/login" class="btn btn-light">Login</router-link>
-          <button class="btn btn-dark">Create</button>
+            <router-link to="/create" class="btn btn-dark">Create</router-link>
           </div>
         </div>
       </div>

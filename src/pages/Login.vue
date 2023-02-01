@@ -10,7 +10,7 @@ const user = auth.currentUser;
 
 if (user) {
   //we're logged in so redirect to the home page
-  //router.push("Home");
+  this.$router.push('/Home');
 }
 export default {
   data() {
@@ -25,8 +25,7 @@ export default {
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log("succsess, user created with email:"+user.email);
-
+            console.log("success, user created with email:"+user.email);
             // ...
           })
           .catch((error) => {
@@ -72,8 +71,8 @@ export default {
              aria-describedby="basic-addon1">
     </div>
     <div>
-      <button type="button" class="btn btn-secondary" @click="create">Register</button>
       <button type="button" class="btn btn-secondary" @click="login">Login</button>
+      <button type="button" class="btn btn-secondary" style="margin-left: 5px" @click="create">Register</button>
     </div>
   </div>
 </template>
@@ -83,11 +82,5 @@ export default {
   margin-top: 10%;
   width:30%;
   padding: 10px;
-}
-.welcome{
-  margin:auto;
-  margin-top: 30px;
-  width:30%;
-
 }
 </style>

@@ -7,5 +7,6 @@ export function loadPage(component) {
 export default [
     {path: '/', component: loadPage('Home')},
     {path: '/login', component: loadPage('Login')},
-    {path: "/friends", component: loadPage("Friends")}
+    {path: "/friends", component: loadPage("Friends")},
+    {path: "/create" , component: loadPage("Create")}
 ]
