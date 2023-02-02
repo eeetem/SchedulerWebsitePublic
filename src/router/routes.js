@@ -8,5 +8,6 @@ export default [
     {path: '/', component: loadPage('Home')},
     {path: '/login', component: loadPage('Login')},
     {path: "/friends", component: loadPage("Friends")},
-    {path: "/create" , component: loadPage("Create")}
+    {path: "/create" , component: loadPage("Create")},
+    {path: "/timetable" , component: loadPage("Timetable")}
 ]

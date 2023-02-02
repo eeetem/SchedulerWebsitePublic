@@ -18,6 +18,9 @@
             <li class="nav-item">
               <router-link to="/friends" class="nav-link" >Friends</router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/timetable" class="nav-link" >Timetable</router-link>
+            </li>
           </ul>
           <div class="btn-group">
             <router-link to="/login" class="btn btn-light">Login</router-link>
