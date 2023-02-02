@@ -9,9 +9,9 @@ import Navbar from '../components/Navbar.vue'
     <div class="row row-no-gutters">
       <div class="col-sm-4 col-md-4 col-lg-3 profile">
         <h1>Profile</h1>
-        <ul class="nav nav-pills flex-column pills">
-          <li class="nav-item pills">
-            <router-link class="nav-link active pills" style="width: 150px" aria-current="page" to="/">Home</router-link>
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <router-link class="nav-link active pills" aria-current="page" to="/">Home</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" aria-current="page" to="/Friends">Friends</router-link>
@@ -38,15 +38,15 @@ import Navbar from '../components/Navbar.vue'
         <h1> Friends!</h1>
         <div>
           <img src="../assets/egg.jpg" class="profile_pics rounded-circle" alt="Chania" >
-          <h7>Aaron</h7>
+          <h7> Aaron</h7>
         </div><br>
         <div>
           <img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania" >
-          <h7>Stephen</h7>
+          <h7> Stephen</h7>
         </div> <br>
         <div>
           <img src="../assets/img_chania.jpg" class="profile_pics rounded-circle" alt="Chania" >
-          <h7>Dennis</h7>
+          <h7> Dennis</h7>
         </div><br>
 
       </div>
@@ -59,22 +59,31 @@ import Navbar from '../components/Navbar.vue'
 <style scoped>
 
 .whoOn{
-  outline: 1px solid rgb(10, 10, 10);
+  outline: 1px solid rgb(197, 197, 197);
 }
 .profile{
-  outline: 1px solid rgb(10, 10, 10);
+  outline: 1px solid rgb(197, 197, 197);
 }
 
 .friends{
-  outline:1px solid rgb(10, 10, 10);
+  outline:1px solid rgb(197, 197, 197);
 }
 .profile_pics{
   height: 75px;
   width: 75px;
 }
 .pills{
-  color: #312e2e;
+  background-color: #e80d0d;
+  width: 100px;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  color: #ffffff;
+  background-color: #6b747d;
+}
+
+.nav-link{
+  color: #181818;
+}
 
 </style>

@@ -19,10 +19,6 @@
               <router-link to="/friends" class="nav-link" >Friends</router-link>
             </li>
           </ul>
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-light" type="submit">Search</button>
-          </form>
           <div class="btn-group">
             <router-link to="/login" class="btn btn-light">Login</router-link>
             <router-link to="/create" class="btn btn-dark">Create</router-link>
