@@ -8,10 +8,6 @@ import {getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword} from
 const auth = getAuth(app);
 const user = auth.currentUser;
 
-if (user) {
-  //we're logged in so redirect to the home page
-  this.$router.push('/Home');
-}
 export default {
   data() {
     return {
@@ -20,6 +16,12 @@ export default {
     }
   },
   methods: {
+    created(){
+      if (user) {
+        //we're logged in so redirect to the home page
+        this.$router.push('/Home');
+      }
+    },
     create() {
       createUserWithEmailAndPassword(auth, this.email, this.password)
           .then((userCredential) => {
@@ -41,6 +43,8 @@ export default {
             // Signed in
             const user = userCredential.user;
             console.log("logged in as "+user.email)
+            console.log(user);
+            this.$router.push('/');
             // ...
           })
           .catch((error) => {

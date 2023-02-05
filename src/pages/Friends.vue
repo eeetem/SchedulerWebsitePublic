@@ -1,6 +1,40 @@
 <script setup>
 import Navbar from '../components/Navbar.vue'
 </script>
+<script>
+import app from "../api/firebase";
+import {getAuth} from "firebase/auth";
+import { getFunctions , httpsCallable,connectFunctionsEmulator} from 'firebase/functions';
+const functions = getFunctions(app);
+connectFunctionsEmulator(functions, "localhost", 5001);
+export default {
+  created() {
+    const auth = getAuth(app);
+    const user = auth.currentUser;
+    if (!user) {
+      //we're not logged in so go to login screen
+      this.$router.push('/login');
+      return;
+    }
+    //otherwise get friend list
+    const firendsRequest = httpsCallable(functions, 'GetFirends');
+    firendsRequest().then((result) => {
+      // Read result of the Cloud Function.
+      const friendList = result.data;
+      console.log(friendList);
+      //todo use the friendlist varible to generate the list of friends
+
+    });
+  },
+  addFriend() {
+
+  },
+  removeFriend(){
+
+  },
+};
+
+</script>
 <template>
   <header>
     <Navbar/>
@@ -15,7 +49,7 @@ import Navbar from '../components/Navbar.vue'
         <p>Friends: 53<br>
            Course: BCT<br>
            Year: 2<br>
-        </p>
+        </p>data
       </div>
       <div class="col-sm-4 col-md-4 col-lg-6 whoOn" align="left">
         <div>

@@ -24,15 +24,30 @@ exports.GetFirends = functions.https.onCall((data, context) => {
     if (!context.auth) {
         return {status: 'error', code: 401, message: 'Not signed in'}
     }
-    const friends = [];
-    admin.firestore().collection('UserData').doc(context.auth.uid).get().then(r => {
-        for (const friendID in r.get("WantsToFriend")) {
-            if(AreFriends(context.auth.uid,friendID)){
-                friends.push(friendID);
-            }
+
+    const query = admin.firestore().collection('UserData').doc(context.auth.uid).get().then(async r => {
+        const friends = [];
+        var awaitingChecks = 0;
+        for (const friendindex in r.get("WantsToFriend")) {
+            const friendID = r.get("WantsToFriend")[friendindex];
+            functions.logger.debug("checking if " + friendID + " is mutual")
+            awaitingChecks++;
+            AreFriends(context.auth.uid, friendID).then(r => {
+                if(r) {
+                    functions.logger.debug("adding: " + r + " to friends")
+                    friends.push(friendID);
+                    functions.logger.debug("adding: " + friendID + " to friends")
+                }
+                awaitingChecks--;
+            })
+
         }
+        while (awaitingChecks > 0) {
+            await sleep(10);
+        }
+        return friends;
     });
-    return friends
+    return query;
 });
 exports.AddFriend = functions.https.onCall((data, context) => {
     functions.logger.info("friend request!");
@@ -84,18 +99,36 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
      db.collection('UserData').doc(user.uid).set(data).then(r => {
          return {status: 'OK', code: 100, message: 'User Created'};
      });
-
-
 });
 
 
 
 
-function AreFriends(id1,id2){
-    const user1 = db.collection('UserData').doc(id1).get();
-    const user2 = db.collection('UserData').doc(id2).get();
-    if (!user1.exists || !user2.exists) {
+async function AreFriends(id1,id2){
+    let result1;
+    let result2;
+    db.collection('UserData').doc(id1).get().then(r=>{
+       result1 = r;
+    });
+    db.collection('UserData').doc(id2).get().then(r=>{
+        result2 = r;
+    });
+    while(!result1||!result2)
+    {
+        await sleep(10);
+    }
+    if (!result1.exists || !result2.exists) {
         return false;
     }
-    return (user1["WantsToFriend"].includes(id2) || user2["WantsToFriend"].includes(id1))
+
+    var bool1= result1.get("WantsToFriend").includes(id2);
+    var bool2= result2.get("WantsToFriend").includes(id1);
+
+    return ( bool1 && bool2)
+}
+
+function sleep(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
 }
