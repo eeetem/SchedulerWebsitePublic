@@ -76,7 +76,7 @@ export default {
     </div>
     <div>
       <button type="button" class="btn btn-secondary" @click="login">Login</button>
-      <button type="button" class="btn btn-secondary" style="margin-left: 5px" @click="create">Register</button>
+      <router-link to="/create" type="button" class="btn btn-secondary" style="margin-left: 5px" @click="create">Register</router-link>
     </div>
   </div>
 </template>

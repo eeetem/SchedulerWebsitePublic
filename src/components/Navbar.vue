@@ -23,8 +23,7 @@
             </li>
           </ul>
           <div class="btn-group">
-            <router-link to="/login" class="btn btn-light">Login</router-link>
-            <router-link to="/create" class="btn btn-dark">Create</router-link>
+            <router-link to="/login" class="btn btn-light">Profile</router-link>
           </div>
         </div>
       </div>
