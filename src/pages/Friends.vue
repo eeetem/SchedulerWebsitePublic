@@ -4,9 +4,8 @@ import Navbar from '../components/Navbar.vue'
 <script>
 import app from "../api/firebase";
 import {getAuth} from "firebase/auth";
-import { getFunctions , httpsCallable,connectFunctionsEmulator} from 'firebase/functions';
+import { getFunctions , httpsCallable} from 'firebase/functions';
 const functions = getFunctions(app);
-connectFunctionsEmulator(functions, "localhost", 5001);
 export default {
   created() {
     const auth = getAuth(app);

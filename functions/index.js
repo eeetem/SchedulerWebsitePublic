@@ -3,9 +3,9 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const {getFirestore} = require("firebase-admin/firestore");
 admin.initializeApp();
-const cors = require('cors')({origin: true});
 const db = getFirestore()
 
+const cors =require('cors')({origin:true})
 // // Create and deploy your first functions
 // // https://firebase.google.com/docs/functions/get-started
 //
@@ -102,6 +102,43 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
 });
 
 
+exports.SubmitUserData = functions.https.onCall((data, context) => {
+    functions.logger.info("account was updated!");
+    if (!context.auth) {
+        return {status: 'error', code: 401, message: 'Not signed in'}
+    }
+    const displayName = data["displayName"];
+    const dob = data["dob"];
+    const courseCode = data["courseCode"];
+    const address = data["address"];
+
+
+
+
+    const query = admin.firestore().collection('UserData').doc(context.auth.uid).get().then(async r => {
+        const friends = [];
+        var awaitingChecks = 0;
+        for (const friendindex in r.get("WantsToFriend")) {
+            const friendID = r.get("WantsToFriend")[friendindex];
+            functions.logger.debug("checking if " + friendID + " is mutual")
+            awaitingChecks++;
+            AreFriends(context.auth.uid, friendID).then(r => {
+                if(r) {
+                    functions.logger.debug("adding: " + r + " to friends")
+                    friends.push(friendID);
+                    functions.logger.debug("adding: " + friendID + " to friends")
+                }
+                awaitingChecks--;
+            })
+
+        }
+        while (awaitingChecks > 0) {
+            await sleep(10);
+        }
+        return friends;
+    });
+    return query;
+});
 
 
 async function AreFriends(id1,id2){
@@ -124,7 +161,7 @@ async function AreFriends(id1,id2){
     var bool1= result1.get("WantsToFriend").includes(id2);
     var bool2= result2.get("WantsToFriend").includes(id1);
 
-    return ( bool1 && bool2)
+    return (bool1 && bool2)
 }
 
 function sleep(ms) {
