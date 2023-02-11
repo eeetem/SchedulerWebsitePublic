@@ -5,10 +5,16 @@ import Navbar from '../components/Navbar.vue'
   <header>
     <Navbar/>
   </header>
-  <body onload="onLoadFunc()">
+  <body>
   <div class="float-container">
     <div class="float-child" style="width: 25%; padding: 10px;">
-      <div> Add Friends Component Here</div>
+      <h3>Friends Online</h3>
+      <ul class="list-group list-group-flush" >
+        <li class="list-group-item list-group-item-action"> <img src="../assets/img_chania.jpg" class="profile_pics rounded-circle" alt="Chania">Dennis</li>
+        <li class="list-group-item list-group-item-action"><img src="../assets/egg.jpg" class="profile_pics rounded-circle" alt="Chania">Aaron</li>
+        <li class="list-group-item list-group-item-action"> <img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania">Tom</li>
+        <li class="list-group-item list-group-item-action"><img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania">Seamus</li>
+      </ul>
     </div>
 
     <div class="float-child" style="width: 50%; padding: 10px">
@@ -25,90 +31,88 @@ import Navbar from '../components/Navbar.vue'
         </thead>
         <tbody class="table-group-divider">
         <tr>
-          <td>9:00</td>
-          <td>
-            <div id="softEng">Software Engineering</div>
-          </td>
-          <td>Software Engineering</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td class="9">9:00</td>
+          <td id="9monday"></td>
+          <td id="9tuesday"></td>
+          <td id="9wednesday"></td>
+          <td id="9thursday"></td>
+          <td id="9friday"></td>
         </tr>
         <tr>
           <td>10:00</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="10monday"></td>
+          <td id="10tuesday"></td>
+          <td id="10wednesday"></td>
+          <td id="10thursday"></td>
+          <td id="10friday"></td>
         </tr>
         <tr>
           <td>11:00</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="11monday"></td>
+          <td id="11tuesday"></td>
+          <td id="11wednesday"></td>
+          <td id="11thursday"></td>
+          <td id="11friday"></td>
         </tr>
         <tr>
           <td>12:00</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="12monday"></td>
+          <td id="12tuesday"></td>
+          <td id="12wednesday"></td>
+          <td id="12thursday"></td>
+          <td id="12friday"></td>
         </tr>
         <tr>
           <td>13:00</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="13monday"></td>
+          <td id="13tuesday"></td>
+          <td id="13wednesday"></td>
+          <td id="13thurday"></td>
+          <td id="13friday"></td>
         </tr>
         <tr>
           <td>14:00</td>
-          <td></td>
-          <td></td>
-          <td>Database Systems</td>
-          <td></td>
-          <td></td>
+          <td id="14monday"></td>
+          <td id="14tuesday"></td>
+          <td id="14wednesday"></td>
+          <td id="14thursday"></td>
+          <td id="14friday"></td>
         </tr>
         <tr>
           <td>15:00</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="15monday"></td>
+          <td id="15tuesday"></td>
+          <td id="15wednesday"></td>
+          <td id="15thursday"></td>
+          <td id="15friday"></td>
         </tr>
         <tr>
           <td>16:00</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="16monday"></td>
+          <td id="16tuesday"></td>
+          <td id="16wednesday"></td>
+          <td id="16thursday"></td>
+          <td id="16friday"></td>
         </tr>
         <tr>
           <td>17:00</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="17monday"></td>
+          <td id="17tuesday"></td>
+          <td id="17wednesday"></td>
+          <td id="17thursday"></td>
+          <td id="17friday"></td>
         </tr>
         <tr>
           <td>18:00</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="18monday"></td>
+          <td id="18tuesday"></td>
+          <td id="18wednesday"></td>
+          <td id="18thursday"></td>
+          <td id="18friday"></td>
         </tr>
         <tr>
           <td colspan="1" style="border: hidden">
-            <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#moduleOptions"
+            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#moduleOptions"
                     aria-expanded="false" aria-controls="moduleOptions">Edit
             </button>
           </td>
@@ -122,54 +126,103 @@ import Navbar from '../components/Navbar.vue'
         <div class=" card card-body">
           <h3>Module Options</h3>
           <p>Select modules you want to display</p>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <input class="form-check-input me-1" type="checkbox" id="firstCheckbox">
-              <label class="form-check-label" for="firstCheckbox">Software Engineering</label>
-            </li>
-            <li class="list-group-item">
-              <input class="form-check-input me-1" type="checkbox" value="Oop">
-              <label class="form-check-label" for="secondCheckbox">Object Oriented Programming</label>
-            </li>
-            <li class="list-group-item">
-              <input class="form-check-input me-1" type="checkbox" value="database">
-              <label class="form-check-label" for="thirdCheckbox">Database Systems</label>
-            </li>
-            <li class="list-group-item">
-              <input class="form-check-input me-1" type="checkbox" value="linearAlgebra">
-              <label class="form-check-label" for="thirdCheckbox">Linear Algebra</label>
-            </li>
-            <li class="list-group-item">
-              <input class="form-check-input me-1" type="checkbox" value="networks">
-              <label class="form-check-label" for="thirdCheckbox">Networks</label>
-            </li>
+          <ul class="list-group" id="moduleList">
           </ul>
-          <button class="btn btn-dark"  style="padding:5px; margin-top: 15px; width: 50px" type="button" data-bs-toggle="collapse" data-bs-target="#moduleOptions"
-                  aria-expanded="false" aria-controls="moduleOptions">Exit</button>
+          <div class="input-group mb-3 timeSelect" style="margin-top:20px">
+            <label class="input-group-text" for="timeInput">Time</label>
+            <select class="form-select" id="timeInput">
+              <option selected>Choose...</option>
+              <option value="9">9:00</option>
+              <option value="10">10:00</option>
+              <option value="11">11:00</option>
+              <option value="12">12:00</option>
+              <option value="13">13:00</option>
+              <option value="14">14:00</option>
+              <option value="15">15:00</option>
+              <option value="16">16:00</option>
+              <option value="17">17:00</option>
+              <option value="18">18:00</option>
+            </select>
+          </div>
+          <div class="input-group mb-3 daySelect">
+            <label class="input-group-text" for="dayInput">Day</label>
+            <select class="form-select" id="dayInput">
+              <option selected>Choose...</option>
+              <option value="monday">Monday</option>
+              <option value="tuesday">Tuesday</option>
+              <option value="wednesday">Wednesday</option>
+              <option value="thursday">Thurday</option>
+              <option value="friday">Friday</option>
+            </select>
+          </div>
+          <div class="input-group mb-3" style="margin-top:1px">
+            <button class="btn btn-secondary" type="button" id="button-addon1" @click="addModule">Add</button>
+            <input type="text" class="form-control" id="addModuleInput">
+            <div class="input-group mb-3">
+              <button class="btn btn-secondary" style="padding:5px; margin-top: 15px; width: 50px" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#moduleOptions"
+                      aria-expanded="false" aria-controls="moduleOptions" @click="displayModule">Exit
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   </body>
 </template>
-
 <script>
-function onLoadFunc() {
-  const softwareEngineering = document.querySelectorAll('#softEng');
 
-  const hideModule = document.querySelector('#firstCheckbox');
- //Wont register Change in checkbox
-  hideModule.addEventListener("change", function (e) {
-    console.log(hideModule.checked);
-    if (hideModule.checked) {
-      softwareEngineering.style.display = "initial";
-      console.log("Box is checked");
-    } else {
-      softwareEngineering.style.display = "none";
+export default {
+  data() {
+    return {}
+  },
+  methods: {
+
+    addModule() {
+      const input = document.getElementById("addModuleInput").value;
+      let day = document.getElementById("dayInput").value;
+      let time = document.getElementById("timeInput").value;
+      let slot = time + day;
+      console.log("Table slot ID: " + slot);
+      if (input !== "" && day !== "" && time !== "") {
+        let moduleList = document.querySelector("#moduleList");
+        console.log(moduleList);
+        moduleList.innerHTML += '<li class="list-group-item">\n' +
+            '<input class="form-check-input me-1" type="checkbox" id="firstCheckbox">\n' +
+            '<label class="form-check-label" for="firstCheckbox">' + input + '</label>\n' +
+            '<button class="btn btn-outline delete" type="button" style="float:right;" @click="removeModule">X</button>' +
+            '</li>';
+
+
+        let tableSlot = document.getElementById(slot);
+        console.log("Get Slot:" + tableSlot);
+        tableSlot.innerHTML += input;
+      }
+    },
+    //Remove method Doesnt work dynamically for some reason(Worked when it was hardcoded)
+    removeModule() {
+      let moduleSelect = document.querySelectorAll("#moduleList .delete");
+      console.log(moduleSelect);
+      Array.from(moduleSelect).forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          const li = e.target.parentElement;
+          li.parentNode.removeChild(li);
+        });
+      });
+    },
+
+    //Will dipslay selected modules in list
+    displayModule() {
+
+      if (document.getElementById("Software").checked) {
+        console.log("Checked");
+      } else {
+        console.log("Checked");
+      }
     }
-  });
+  }
 }
-
 </script>
 
 <style scoped>
@@ -180,4 +233,23 @@ function onLoadFunc() {
 .float-child {
   float: left;
 }
+
+.whoOn{
+  outline: 1px solid rgb(197, 197, 197);
+}
+.profile{
+  outline: 1px solid rgb(197, 197, 197);
+}
+
+.friends{
+  outline:1px solid rgb(197, 196, 196);
+}
+.profile_pics{
+  height: 55px;
+  width: 55px;
+}
+.pills{
+  color: #312e2e;
+}
+
 </style>
