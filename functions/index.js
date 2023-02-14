@@ -5,10 +5,7 @@ const {getFirestore} = require("firebase-admin/firestore");
 admin.initializeApp();
 const db = getFirestore()
 
-const cors =require('cors')({origin:true})
-// // Create and deploy your first functions
-// // https://firebase.google.com/docs/functions/get-started
-//
+
  exports.WhosUp = functions.https.onCall((request, response) => {
    functions.logger.info("Reuqested WhosUP!");
    return {
@@ -114,7 +111,7 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
             courseCode:"xx000"
         }
     };
-    return db.collection('UserData').doc(user.uid).set(data).then(r => {
+    return db.collection('UserData').doc(user.uid).set(data).then(() => {
          return {status: 'OK', code: 100, message: 'User Created'};
      });
 });
@@ -131,7 +128,7 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
     const courseCode = data["courseCode"];
     //todo sanetize
     const userDoc = db.collection('UserData').doc(context.auth.uid);
-    const res = await userDoc.update({
+    await userDoc.update({
         'publicData.dob': dob,
         'publicData.surName':surName,
         'publicData.firstName':firstName,

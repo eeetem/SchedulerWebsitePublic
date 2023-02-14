@@ -16,20 +16,23 @@ export default {
       return;
     }
     //otherwise get friend list
-    const dataRequest = httpsCallable(functions, 'GetUserData');
-    dataRequest({userid:user.uid}).then((result) => {
-      // Read result of the Cloud Function.
-      const friendList = result.data;
-      console.log(friendList);
-      //todo use the friendlist varible to generate the list of friends
 
-    });
+
+
     const firendsRequest = httpsCallable(functions, 'GetFirends');
     firendsRequest().then((result) => {
       // Read result of the Cloud Function.
       const friendList = result.data;
       console.log(friendList);
-      //todo use the friendlist varible to generate the list of friends
+      for (const friendListKey in friendList) {
+        const dataRequest = httpsCallable(functions, 'GetUserData');
+        dataRequest({userid:friendListKey}).then((result) => {
+          // Read result of the Cloud Function.
+          const userdata = result.data;
+          console.log(userdata);
+          //todo display friends on page
+        });
+      }
 
     });
   },
