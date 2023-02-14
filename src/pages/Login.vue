@@ -5,6 +5,8 @@ import Navbar from '../components/Navbar.vue'
 <script>
 import app from "../api/firebase";
 import {getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
+import { getFunctions , httpsCallable} from 'firebase/functions';
+const functions = getFunctions(app);
 const auth = getAuth(app);
 const user = auth.currentUser;
 
@@ -24,11 +26,22 @@ export default {
     },
     create() {
       createUserWithEmailAndPassword(auth, this.email, this.password)
-          .then((userCredential) => {
+          .then(async (userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log("success, user created with email:"+user.email);
+            console.log("success, user created with email:" + user.email);
             // ...
+            var userData = {};
+            userData["firstName"] = "john"
+            userData["surName"] = "smith"
+            userData["dob"] = "03/05/2000"
+            userData["courseCode"] = "gy350"
+            //todo prompt the user for this data and make it look nice
+            await new Promise(r => setTimeout(r, 2000));//sleep for 2 seconds in order to let the server create the user first
+            const dataUpload = httpsCallable(functions, 'SubmitUserData');
+            dataUpload(userData).then((result) => {
+              console.log(result.data);
+            });
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -52,7 +65,8 @@ export default {
             const errorMessage = error.message;
             console.log(errorCode+errorMessage);
           });
-    }
+    },
+
   }
 }
 

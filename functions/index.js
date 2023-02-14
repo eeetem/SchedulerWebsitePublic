@@ -49,6 +49,18 @@ exports.GetFirends = functions.https.onCall((data, context) => {
     });
     return query;
 });
+
+
+exports.GetUserData = functions.https.onCall((data, context) => {
+    functions.logger.info("data requested for user: !"+data.userid);
+
+    const query = admin.firestore().collection('UserData').doc(context.auth.uid).get().then(async r => {
+       return r.get("publicData");
+    });
+    return query;
+});
+
+
 exports.AddFriend = functions.https.onCall((data, context) => {
     functions.logger.info("friend request!");
     if (!context.auth) {
@@ -95,49 +107,37 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
     functions.logger.info("created new user with id: "+user.uid, {structuredData: true});
     const data = {
         WantsToFriend: [],
+        publicData:{
+            firstName :"fname",
+            surName :"sname",
+            dob:"00/00/000",
+            courseCode:"xx000"
+        }
     };
-     db.collection('UserData').doc(user.uid).set(data).then(r => {
+    return db.collection('UserData').doc(user.uid).set(data).then(r => {
          return {status: 'OK', code: 100, message: 'User Created'};
      });
 });
 
 
-exports.SubmitUserData = functions.https.onCall((data, context) => {
+exports.SubmitUserData = functions.https.onCall(async (data, context) => {
     functions.logger.info("account was updated!");
     if (!context.auth) {
         return {status: 'error', code: 401, message: 'Not signed in'}
     }
-    const displayName = data["displayName"];
+    const firstName = data["firstName"];
+    const surName = data["surName"];
     const dob = data["dob"];
     const courseCode = data["courseCode"];
-    const address = data["address"];
-
-
-
-
-    const query = admin.firestore().collection('UserData').doc(context.auth.uid).get().then(async r => {
-        const friends = [];
-        var awaitingChecks = 0;
-        for (const friendindex in r.get("WantsToFriend")) {
-            const friendID = r.get("WantsToFriend")[friendindex];
-            functions.logger.debug("checking if " + friendID + " is mutual")
-            awaitingChecks++;
-            AreFriends(context.auth.uid, friendID).then(r => {
-                if(r) {
-                    functions.logger.debug("adding: " + r + " to friends")
-                    friends.push(friendID);
-                    functions.logger.debug("adding: " + friendID + " to friends")
-                }
-                awaitingChecks--;
-            })
-
-        }
-        while (awaitingChecks > 0) {
-            await sleep(10);
-        }
-        return friends;
+    //todo sanetize
+    const userDoc = db.collection('UserData').doc(context.auth.uid);
+    const res = await userDoc.update({
+        'publicData.dob': dob,
+        'publicData.surName':surName,
+        'publicData.firstName':firstName,
+        'publicData.courseCode': courseCode
     });
-    return query;
+    return {status: 'ok', code: 101, message: 'updated'}
 });
 
 
