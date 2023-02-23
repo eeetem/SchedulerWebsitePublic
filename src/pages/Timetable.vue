@@ -67,7 +67,7 @@ import Navbar from '../components/Navbar.vue'
           <td id="13monday"></td>
           <td id="13tuesday"></td>
           <td id="13wednesday"></td>
-          <td id="13thurday"></td>
+          <td id="13thursday"></td>
           <td id="13friday"></td>
         </tr>
         <tr>

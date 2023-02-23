@@ -5,8 +5,13 @@ import Navbar from '../components/Navbar.vue'
 import app from "../api/firebase";
 import {getAuth} from "firebase/auth";
 import { getFunctions , httpsCallable} from 'firebase/functions';
+import FriendsList from "@/components/FriendsList.vue";
 const functions = getFunctions(app);
 export default {
+  name: "app",
+  components:{
+    FriendsList,
+  },
   created() {
     const auth = getAuth(app);
     const user = auth.currentUser;
@@ -16,26 +21,25 @@ export default {
       return;
     }
     //otherwise get friend list
-
-
-
-    const firendsRequest = httpsCallable(functions, 'GetFirends');
-    firendsRequest().then((result) => {
-      // Read result of the Cloud Function.
-      const friendList = result.data;
-      console.log(friendList);
-      for (const friendListKey in friendList) {
-        const dataRequest = httpsCallable(functions, 'GetUserData');
-        dataRequest({userid:friendListKey}).then((result) => {
-          // Read result of the Cloud Function.
-          const userdata = result.data;
-          console.log(userdata);
-          //todo display friends on page
-        });
-      }
-
-    });
+      const friendsRequest = httpsCallable(functions, 'GetFirends');
+      friendsRequest().then((result) => {
+        // Read result of the Cloud Function.
+        const friendList = result.data;
+        for (const friendListKey in friendList) {
+          let friends = document.createElement("li");
+          friends.innerHTML += friendList[friendListKey];
+          document.getElementById('friends').appendChild(friends);
+          console.log(friendList);
+          const dataRequest = httpsCallable(functions, 'GetUserData');
+          dataRequest({userid: friendListKey}).then((result) => {
+            // Read result of the Cloud Function.
+            const userdata = result.data;
+            console.log(userdata);
+          });
+        }
+      });
   },
+
   addFriend() {
 
   },
@@ -49,26 +53,22 @@ export default {
   <header>
     <Navbar/>
   </header>
-
   <div class="container-fluid">
     <div class="row row-no-gutters">
       <div class="col-sm-4 col-md-4 col-lg-3 profile">
         <h2>Your Profile</h2>
         <img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania" >
         <h5>Stephen O'Connor <router-link to="" class="btn btn-light" align="right">Edit Profile</router-link></h5>
-        <p>Friends: 53<br>
+        <p>Friends:<br>
            Course: BCT<br>
            Year: 2<br>
         </p>data
       </div>
       <div class="col-sm-4 col-md-4 col-lg-6 whoOn" align="left">
-        <div>
+        <div id="app">
           <h2>Friends</h2>
-          <ul class="list-group list-group-flush" >
-            <li class="list-group-item list-group-item-action"> <img src="../assets/img_chania.jpg" class="profile_pics rounded-circle" alt="Chania">Dennis</li>
-            <li class="list-group-item list-group-item-action"><img src="../assets/egg.jpg" class="profile_pics rounded-circle" alt="Chania">Aaron</li>
-            <li class="list-group-item list-group-item-action"> <img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania">Tom</li>
-            <li class="list-group-item list-group-item-action"><img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania">Seamus</li>
+          <ul id="friends">
+
           </ul>
         </div>
 

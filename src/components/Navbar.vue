@@ -1,6 +1,7 @@
 <script setup>
 
 </script>
+
 <template>
   <h1>
     <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
