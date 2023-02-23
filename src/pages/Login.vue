@@ -51,19 +51,23 @@ export default {
           });
     },
     login() {
+      let verify  = document.getElementById("loginCheck")
       signInWithEmailAndPassword(auth, this.email, this.password)
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
             console.log("logged in as "+user.email)
             console.log(user);
-            this.$router.push('/');
-            // ...
+            this.$router.push('/home');
+            verify.innerHTML = '<div class="alert alert-success" role="alert" style="height: 40px; padding: 5px; text-align: center">' +
+                "Login Successful" +' </div>';
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode+errorMessage);
+            verify.innerHTML = '<div class="alert alert-danger" role="alert" style="height: 40px; padding: 5px; text-align: center">' +
+              "Incorrect Details. Check Username and Password" +' </div>';
           });
     },
 
@@ -88,6 +92,7 @@ export default {
       <input v-model="password" type="text" class="form-control" placeholder="Password" aria-label="Password"
              aria-describedby="basic-addon1">
     </div>
+    <div id="loginCheck"></div>
     <div>
       <button type="button" class="btn btn-secondary" @click="login">Login</button>
       <router-link to="/create" type="button" class="btn btn-secondary" style="margin-left: 5px" @click="create">Register</router-link>

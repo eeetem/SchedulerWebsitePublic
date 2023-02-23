@@ -1,0 +1,18 @@
+[
+  {
+    "slot": "9monday",
+    "moduleName": "Software Engineering"
+  },
+  {
+    "slot": "10monday",
+    "moduleName": "Software Engineering"
+  },
+  {
+    "slot": "10thursday",
+    "moduleName": "Database"
+  },
+  {
+    "slot": "17tuesday",
+    "moduleName": "Programming"
+  }
+]

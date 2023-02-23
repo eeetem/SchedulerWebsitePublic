@@ -5,15 +5,23 @@ import Navbar from '../components/Navbar.vue'
   <header>
     <Navbar/>
   </header>
-  <body>
+  <body onload="loadTimetable()">
   <div class="float-container">
     <div class="float-child" style="width: 25%; padding: 10px;">
       <h3>Friends Online</h3>
-      <ul class="list-group list-group-flush" >
-        <li class="list-group-item list-group-item-action"> <img src="../assets/img_chania.jpg" class="profile_pics rounded-circle" alt="Chania">Dennis</li>
-        <li class="list-group-item list-group-item-action"><img src="../assets/egg.jpg" class="profile_pics rounded-circle" alt="Chania">Aaron</li>
-        <li class="list-group-item list-group-item-action"> <img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania">Tom</li>
-        <li class="list-group-item list-group-item-action"><img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania">Seamus</li>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-action"><img src="../assets/img_chania.jpg"
+                                                                class="profile_pics rounded-circle" alt="Chania">Dennis
+        </li>
+        <li class="list-group-item list-group-item-action"><img src="../assets/egg.jpg"
+                                                                class="profile_pics rounded-circle" alt="Chania">Aaron
+        </li>
+        <li class="list-group-item list-group-item-action"><img src="../assets/Grannygun.jpg"
+                                                                class="profile_pics rounded-circle" alt="Chania">Tom
+        </li>
+        <li class="list-group-item list-group-item-action"><img src="../assets/Grannygun.jpg"
+                                                                class="profile_pics rounded-circle" alt="Chania">Seamus
+        </li>
       </ul>
     </div>
 
@@ -177,6 +185,9 @@ export default {
   data() {
     return {}
   },
+  mounted() {
+    this.loadTimetable(); //Loads timetable with page
+  },
   methods: {
 
     addModule() {
@@ -194,12 +205,56 @@ export default {
             '<button class="btn btn-outline delete" type="button" style="float:right;" @click="removeModule">X</button>' +
             '</li>';
 
-
         let tableSlot = document.getElementById(slot);
         console.log("Get Slot:" + tableSlot);
-        tableSlot.innerHTML += input;
+        tableSlot.innerText = input;
+        this.saveTimetable(input, slot);
       }
     },
+
+    saveTimetable(moduleName, timeSlot) {
+      console.log("Saving")
+      const data = {
+        slot: timeSlot,
+        name: moduleName
+      }
+      console.log(data)
+
+      const fs = require('fs');
+      const saveData = (data) => {
+        const finsihed = (error) => {
+          if (error) {
+            console.error(error)
+            return;
+          }
+        }
+
+        const timetableData = JSON.stringify(data, null, 2)
+        console.log(timetableData);
+        fs.writeFile('timetable.json', timetableData, finsihed)
+      }
+    },
+
+    loadTimetable() {
+      console.log("Loading")
+      let moduleList = document.querySelector("#moduleList");
+      fetch("timetable.json") //Gets data from this json file.(Not linked to server)
+          .then(response => response.json())
+          .then(data => {
+            for(var i = 0; i<data.length; i++) {
+              let tableSlot = document.getElementById(data[i].slot);
+              console.log("Name:" + data[i].moduleName);
+              moduleList.innerHTML += '<li class="list-group-item">\n' +
+                  '<input class="form-check-input me-1" type="checkbox" id="firstCheckbox">\n' +
+                  '<label class="form-check-label" for="firstCheckbox">' + data[i].moduleName + '</label>\n' +
+                  '<button class="btn btn-outline delete" type="button" style="float:right;" @click="removeModule">X</button>' +
+                  '</li>';
+
+              tableSlot.innerHTML = data[i].moduleName;
+            }
+          })
+    },
+
     //Remove method Doesnt work dynamically for some reason(Worked when it was hardcoded)
     removeModule() {
       let moduleSelect = document.querySelectorAll("#moduleList .delete");
@@ -234,21 +289,24 @@ export default {
   float: left;
 }
 
-.whoOn{
-  outline: 1px solid rgb(197, 197, 197);
-}
-.profile{
+.whoOn {
   outline: 1px solid rgb(197, 197, 197);
 }
 
-.friends{
-  outline:1px solid rgb(197, 196, 196);
+.profile {
+  outline: 1px solid rgb(197, 197, 197);
 }
-.profile_pics{
+
+.friends {
+  outline: 1px solid rgb(197, 196, 196);
+}
+
+.profile_pics {
   height: 55px;
   width: 55px;
 }
-.pills{
+
+.pills {
   color: #312e2e;
 }
 
