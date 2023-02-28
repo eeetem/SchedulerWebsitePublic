@@ -108,7 +108,8 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
             firstName :"fname",
             surName :"sname",
             dob:"00/00/000",
-            courseCode:"xx000"
+            courseCode:"xx000",
+            bio:"i am a very ordinary person"
         }
     };
     return db.collection('UserData').doc(user.uid).set(data).then(() => {
@@ -126,13 +127,15 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
     const surName = data["surName"];
     const dob = data["dob"];
     const courseCode = data["courseCode"];
-    //todo sanetize
+    const bio = data["bio"];
+
     const userDoc = db.collection('UserData').doc(context.auth.uid);
     await userDoc.update({
         'publicData.dob': dob,
         'publicData.surName':surName,
         'publicData.firstName':firstName,
-        'publicData.courseCode': courseCode
+        'publicData.courseCode': courseCode,
+        'publicData.bio': bio,
     });
     return {status: 'ok', code: 101, message: 'updated'}
 });
