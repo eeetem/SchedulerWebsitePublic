@@ -1,7 +1,3 @@
-<script setup>
-import Navbar from '../components/Navbar.vue'
-
-</script>
 <script>
 import app from "../api/firebase";
 import {getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
@@ -78,7 +74,21 @@ export default {
 <template>
 
   <header>
-    <Navbar/>
+    <h1>
+      <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Scheduler</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </h1>
   </header>
   <div class="login">
     <h3 class="text-center lead " style="font-size:40px; padding: 30px">Welcome</h3>
@@ -105,5 +115,18 @@ export default {
   margin-top: 10%;
   width:30%;
   padding: 10px;
+}
+.navbar-brand {
+  font-size: 40px;
+  color: white;
+
+}
+.nav-item{
+  margin-left:10px;
+  font-size: 20px;
+  color: white;
+}
+nav-link{
+  color:white;
 }
 </style>
