@@ -9,5 +9,6 @@ export default [
     {path: "/home", component: loadPage("Home")},
     {path: "/friends", component: loadPage("Friends")},
     {path: "/create" , component: loadPage("Create")},
-    {path: "/timetable" , component: loadPage("Timetable")}
+    {path: "/timetable" , component: loadPage("Timetable")},
+    {path: "/settings" , component: loadPage("Settings")}
 ]

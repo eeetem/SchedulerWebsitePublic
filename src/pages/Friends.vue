@@ -55,7 +55,7 @@ export default {
   </header>
   <div class="container-fluid">
     <div class="row row-no-gutters">
-      <div class="col-sm-4 col-md-4 col-lg-3 profile">
+      <div class="col-lg-3 profile">
         <h2>Your Profile</h2>
         <img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania" >
         <h5>Stephen O'Connor <router-link to="" class="btn btn-light" align="right">Edit Profile</router-link></h5>
@@ -64,7 +64,7 @@ export default {
            Year: 2<br>
         </p>data
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-6 whoOn" align="left">
+      <div class="col-lg-6 whoOn" align="left">
         <div id="app">
           <h2>Friends</h2>
           <ul id="friends">
@@ -73,7 +73,7 @@ export default {
         </div>
 
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-3 friends " align="left">
+      <div class="col-lg-3 friends " align="left">
         <div>
           <h2>Recommended Friends</h2>
           <ul class="list-group list-group-flush" >
@@ -106,6 +106,10 @@ export default {
 }
 .pills{
   color: #312e2e;
+}
+.pills{
+  background-color: #e80d0d;
+  width: 100px;
 }
 
 
