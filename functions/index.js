@@ -50,8 +50,11 @@ exports.GetFirends = functions.https.onCall((data, context) => {
 
 exports.GetUserData = functions.https.onCall((data, context) => {
     functions.logger.info("data requested for user: !"+data.userid);
+    if(data.userid === ""){
+        data.userid = context.auth.uid;
+    }
 
-    const query = admin.firestore().collection('UserData').doc(context.auth.uid).get().then(async r => {
+    const query = admin.firestore().collection('UserData').doc(data.userid).get().then(async r => {
        return r.get("publicData");
     });
     return query;

@@ -1,3 +1,29 @@
+<script>
+import app from "../api/firebase";
+import {getAuth, signOut} from "firebase/auth";
+import { getFunctions} from 'firebase/functions';
+const functions = getFunctions(app);
+const auth = getAuth(app);
+const user = auth.currentUser;
+
+export default {
+  data() {
+  },
+  methods: {
+    logout(){
+      console.log("loggin out")
+      signOut(auth).then(() => {
+        this.$router.push('/');
+      }).catch((error) => {
+        console.log("error: "+error)
+        // An error happened.
+      });
+    },
+  }
+
+}
+</script>
+
 <template>
   <h1>
     <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
@@ -23,7 +49,7 @@
             </li>
           </ul>
           <div class="btn-group">
-            <router-link to="/settings" class="btn btn-light">Profile</router-link>
+            <button @click="logout" class="btn btn-light">Log Out</button>
           </div>
         </div>
       </div>
