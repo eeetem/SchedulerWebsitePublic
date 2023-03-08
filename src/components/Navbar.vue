@@ -1,7 +1,8 @@
 <script>
 import app from "../api/firebase";
 import {getAuth, signOut} from "firebase/auth";
-import { getFunctions} from 'firebase/functions';
+import {getFunctions} from 'firebase/functions';
+
 const functions = getFunctions(app);
 const auth = getAuth(app);
 const user = auth.currentUser;
@@ -9,16 +10,24 @@ const user = auth.currentUser;
 export default {
   data() {
   },
+  mounted() {
+    this.setUser()
+  },
   methods: {
-    logout(){
+    logout() {
       console.log("loggin out")
       signOut(auth).then(() => {
         this.$router.push('/');
       }).catch((error) => {
-        console.log("error: "+error)
+        console.log("error: " + error)
         // An error happened.
       });
     },
+
+    setUser(){
+      let userDisplay = document.getElementById("currentUser")
+      userDisplay.innerHTML = user.email;
+    }
   }
 
 }
@@ -39,41 +48,44 @@ export default {
               <router-link to="/home" class="nav-link">Home</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/friends" class="nav-link" >Friends</router-link>
+              <router-link to="/friends" class="nav-link">Friends</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/timetable" class="nav-link" >Timetable</router-link>
+              <router-link to="/timetable" class="nav-link">Timetable</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/settings" class="nav-link" >Settings</router-link>
+              <router-link to="/settings" class="nav-link">Settings</router-link>
             </li>
           </ul>
-          <div class="btn-group">
-            <button @click="logout" class="btn btn-light">Log Out</button>
+          <h6 id="currentUser" style="padding-right: 30px">
+          </h6>
+              <div class="btn-group">
+                <button @click="logout" class="btn btn-light">Log Out</button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
     </nav>
   </h1>
 </template>
 
 <style scoped>
 .navbar-brand {
- font-size: 40px;
+  font-size: 40px;
   color: white;
 
 }
 
-.nav-item{
-  margin-left:10px;
+.nav-item {
+  margin-left: 10px;
   font-size: 20px;
   color: white;
 }
-nav-link{
-  color:white;
+
+nav-link {
+  color: white;
 }
 
-.d-flex{
-  margin-right:10%;
+.d-flex {
+  margin-right: 10%;
 }
 </style>
