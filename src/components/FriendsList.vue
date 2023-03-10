@@ -1,6 +1,5 @@
 <template>
   <div id="friends">
-    <li></li>
   </div>
 </template>
 
@@ -14,9 +13,12 @@ export default {
   const friendsRequest = httpsCallable(functions, 'GetFirends');
   friendsRequest().then((result) => {
     const friendList = result.data;
-    let friends = document.getElementById("friends");
-    friends.innerHTML += friendList;
-    console.log(friendList);
+    for (const friendListKey in friendList ) {
+      let friends = document.createElement("li");
+      friends.innerHTML += friendList[friendListKey];
+      document.getElementById('friends').appendChild(friends);
+      console.log(friendList);
+    }
   });
 </script>
 
