@@ -169,7 +169,7 @@ import Navbar from '../components/Navbar.vue'
             <div class="input-group mb-3">
               <button class="btn btn-secondary" style="padding:5px; margin-top: 15px; width: 50px" type="button"
                       data-bs-toggle="collapse" data-bs-target="#moduleOptions"
-                      aria-expanded="false" aria-controls="moduleOptions" @click="displayModule">Exit
+                      aria-expanded="false" aria-controls="moduleOptions" @click="removeModule">Exit
               </button>
             </div>
           </div>
@@ -241,7 +241,7 @@ export default {
       fetch("timetable.json") //Gets data from this json file.(Not linked to server)
           .then(response => response.json())
           .then(data => {
-            for(var i = 0; i<data.length; i++) {
+            for (var i = 0; i < data.length; i++) {
               let tableSlot = document.getElementById(data[i].slot);
               console.log("Name:" + data[i].moduleName);
               moduleList.innerHTML += '<li class="list-group-item">\n' +

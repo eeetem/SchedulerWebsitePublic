@@ -2,13 +2,8 @@
   <header>
     <h1>
       <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
-        <div class="container-fluid">
+        <div class="container-md">
           <a class="navbar-brand" href="/">Scheduler</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#navbarSupportedContent"
-                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             </ul>
@@ -18,11 +13,11 @@
     </h1>
   </header>
   <div id="userDetails">
-    <h1 class="mb-3" style="text-align: center">Create User</h1>
+    <h1 class="mb-3" style="text-align: center; padding: 20px">Create User</h1>
     <form class="row g-3 needs-validation" novalidate>
       <div class="input mb-3">
         <div class="col">
-          <h4>User Details</h4>
+          <p class="lead">Enter user details</p>
         </div>
         <div class="row">
           <div class="col">
@@ -47,16 +42,28 @@
         <div class="row" style="width: 52%; text-align: left">
           <div class="col">
             <label for="dob" class="form-label">Date of Birth</label>
-            <input id="dob" class="form-control" placeholder="DD/MM/YYYY">
+            <input id="dob" class="form-control" placeholder="01/02/2003">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" class="form-control" placeholder="Password">
+          </div>
+        </div>
+        <div id="passwordHelp" style="display: none">
+          <div class="alert alert-danger" role="alert" style="height: 40px; padding: 5px; text-align: center">
+            Minimum 6 characters
           </div>
         </div>
         <div class="col-md-6">
-          <label class="form-label">Password</label>
-          <input id="password" class="form-control">
-        </div>
-        <div class="col-md-6">
           <label class="form-label">Confirm Password</label>
-          <input id="passwordConfirm" class="form-control">
+          <input id="passwordConfirm" class="form-control" placeholder="Re-type Password">
+        </div>
+        <div id="passwordNoMatch" style="display: none">
+          <div class="alert alert-danger" role="alert" style="height: 40px; padding: 5px; text-align: center">
+            Password doesnt match
+          </div>
         </div>
       </div>
     </form>
@@ -65,11 +72,11 @@
     </div>
   </div>
   <div id="courseDetails" style="display: none;">
-    <h1 class="mb-3" style="text-align: center; padding:15px">Course Details</h1>
+    <h1 class="mb-3" style="text-align: center; padding: 15px">Course Details</h1>
     <form class="row g-3">
       <div class="input mb-3">
-        <div class="col">
-          <h4 style="padding: 5px">Please fill in details below</h4>
+        <div class="col mb-3">
+          <h5 class="lead">Enter course details</h5>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -98,7 +105,8 @@
     </div>
   </div>
   <div id="finalConfirm" class="input" style="display: none">
-    <h1 style="text-align: center; padding: 30px;">Account Details</h1>
+    <h1 class="mb-3" style="text-align: center; padding: 20px">Account Details</h1>
+    <p class="lead">Overview</p>
     <form>
       <fieldset disabled>
         <div class="row">
@@ -144,7 +152,7 @@
         <button class="btn btn-dark" @click="previousPage" type="submit">Back</button>
       </div>
       <div class="col" style="padding-top: 30px; width: 25%; text-align: right;">
-        <button class="btn btn-dark" @click="nextPage" type="submit">Create Account</button>
+        <button class="btn btn-dark" @click="nextPage" type="submit">Create</button>
       </div>
     </div>
   </div>
@@ -186,17 +194,17 @@ export default {
       let courseDetails = document.getElementById("courseDetails");
       let confirmDetails = document.getElementById("finalConfirm");
 
-      if (pageIndex == 1) {
+      if (pageIndex === 1) {
         userDetails.style.display = 'block';
         courseDetails.style.display = 'none';
         confirmDetails.style.display = 'none';
       }
-      if (pageIndex == 2) {
+      if (pageIndex === 2) {
         userDetails.style.display = 'none';
         courseDetails.style.display = 'block';
         confirmDetails.style.display = 'none';
       }
-      if (pageIndex == 3) {
+      if (pageIndex === 3) {
         userDetails.style.display = 'none';
         courseDetails.style.display = 'none';
         confirmDetails.style.display = 'block';
@@ -204,19 +212,19 @@ export default {
     },
 
     nextPage() {
-      if (pageIndex == 1) {
+      if (pageIndex === 1) {
         this.checkUserDetails()
         if (userCheck) {
           pageIndex++;
         }
       }
-      if (pageIndex == 2) {
+      if (pageIndex === 2) {
         this.checkCourseDetail()
         if (courseCheck) {
           pageIndex++;
         }
       }
-      if (pageIndex == 3) {
+      if (pageIndex === 3) {
         this.create()
         this.login()
       }
@@ -272,16 +280,26 @@ export default {
       }
 
       if (email.value !== "") {
-        checked++;
-        email.classList.remove("is-invalid")
-        email.classList.add("is-valid")
-        document.getElementById("disabledTextInput emailPlaceholder").placeholder = email.value;
-      } else {
-        email.classList.remove("is-valid")
-        email.classList.add("is-invalid")
+        let emailVerify = false;
+        for (let i = 0; i < email.value.length; i++) {
+          if (email.value.charAt(i) === "@") {
+            emailVerify = true;
+            console.log("Email Verified")
+          }
+        }
+        if (emailVerify) {
+          checked++;
+          email.classList.remove("is-invalid")
+          email.classList.add("is-valid")
+          document.getElementById("disabledTextInput emailPlaceholder").placeholder = email.value;
+        } else {
+          email.classList.remove("is-valid")
+          email.classList.add("is-invalid")
+          console.log("Invalid")
+        }
       }
 
-      if (dob.value !== "" && dob.value.length == 10) {
+      if (dob.value !== "" && dob.value.length === 10) {
         checked++;
         dob.classList.remove("is-invalid")
         dob.classList.add("is-valid")
@@ -291,7 +309,8 @@ export default {
         dob.classList.add("is-invalid")
       }
 
-      if (password.value !== "") {
+      if (password.value !== "" && password.value.length >= 6) {
+        document.getElementById("passwordHelp").style.display = 'none';
         password.classList.remove("is-invalid")
         password.classList.add("is-valid")
         if (passwordConfirm.value !== "") {
@@ -299,19 +318,26 @@ export default {
             checked++;
             passwordConfirm.classList.remove("is-invalid")
             passwordConfirm.classList.add("is-valid")
+            document.getElementById("passwordNoMatch").style.display = 'none';
           } else {
             passwordConfirm.classList.remove("is-valid")
             passwordConfirm.classList.add("is-invalid")
+            document.getElementById("passwordNoMatch").style.display = 'block';
           }
-        } else {
+        }
+        else{
           passwordConfirm.classList.remove("is-valid")
           passwordConfirm.classList.add("is-invalid")
         }
       } else {
+
         password.classList.remove("is-valid")
         password.classList.add("is-invalid")
+
+        document.getElementById("passwordHelp").style.display = 'block';
       }
-      if (checked == 6) {
+
+      if (checked === 6) {
         userCheck = true;
       }
     },
@@ -336,10 +362,11 @@ export default {
         document.getElementById("disabledTextInput yearPlaceholder").placeholder = year.value;
       }
 
-      if (checked == 2) {
+      if (checked === 2) {
         courseCheck = true;
       }
-    },
+    }
+    ,
     create() {
       createUserWithEmailAndPassword(auth, email.value, password.value)
           .then(async (userCredential) => {
@@ -365,23 +392,24 @@ export default {
             console.log(errorCode + errorMessage)
             // ..
           });
-    },
+    }
+    ,
     login() {
-      let verify  = document.getElementById("loginCheck")
       signInWithEmailAndPassword(auth, email.value, password.value)
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log("logged in as "+user.email)
+            console.log("logged in as " + user.email)
             console.log(user);
             this.$router.push('/home');
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorCode+errorMessage);
+            console.log(errorCode + errorMessage);
           });
-    },
+    }
+    ,
   }
 }
 </script>
@@ -397,17 +425,12 @@ export default {
 
 }
 
-.nav-item {
-  margin-left: 10px;
-  font-size: 20px;
-  color: white;
-}
-
 nav-link {
   color: white;
 }
 
-.d-flex {
-  margin-right: 10%;
+.form-label{
+  font-style: initial;
+  color: black;
 }
 </style>
