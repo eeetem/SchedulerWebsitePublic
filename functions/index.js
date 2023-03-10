@@ -122,10 +122,11 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
 
 
 exports.SubmitUserData = functions.https.onCall(async (data, context) => {
-    functions.logger.info("Submiting User Data: "+data);
+    functions.logger.info("Data Submited!");
     if (!context.auth) {
         return {status: 'error', code: 401, message: 'Not signed in'}
     }
+    functions.logger.info("bio: "+ data["bio"]);
     const firstName = data["firstName"];
     const surName = data["surName"];
     const dob = data["dob"];

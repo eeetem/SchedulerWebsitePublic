@@ -120,11 +120,11 @@ export default {
         });
     },
     submitProfileDetails() {
-      let userData = [];
+      let userData = {};
         let bio = document.getElementById('bio');
         let course = document.getElementById('course');
         if (bio.value !== '') {
-          userData['bio'] = document.getElementById("bio");
+          userData['bio'] = document.getElementById("bio").value;
           bio.classList.remove("is-invalid")
           bio.classList.add("is-valid")
         } else {
@@ -132,7 +132,7 @@ export default {
           bio.classList.add("is-invalid")
         }
         if (course.value !== '') {
-          userData['courseCode'] = document.getElementById("course");
+          userData['courseCode'] = document.getElementById("course").value;
           course.classList.remove("is-invalid")
           course.classList.add("is-valid")
         } else {

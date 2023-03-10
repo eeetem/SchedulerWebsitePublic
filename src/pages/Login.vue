@@ -17,7 +17,7 @@ export default {
     created(){
       if (user) {
         //we're logged in so redirect to the home page
-        this.$router.push('/Home');
+        this.$router.push('/Home');   this.$router.push('/Home');
       }
     },
     create() {
