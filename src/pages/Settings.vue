@@ -43,7 +43,6 @@ export default {
 
     },
     submitUserData() {
-      console.log('here');
       let userData = [];
         let password = document.getElementById('newPassword');
         let passwordConfirm = document.getElementById('passwordConfirm');
@@ -114,19 +113,16 @@ export default {
           email.classList.remove("is-valid")
           email.classList.add("is-invalid")
         }
-        console.log('Submitted');
+        console.log(userData);
         const dataUpload = httpsCallable(functions, 'SubmitUserData');
         dataUpload(userData).then((result) => {
           console.log(result.data);
         });
-        console.log('here3');
     },
     submitProfileDetails() {
-      console.log('here');
       let userData = [];
         let bio = document.getElementById('bio');
         let course = document.getElementById('course');
-        console.log('here2');
         if (bio.value !== '') {
           userData['bio'] = document.getElementById("bio");
           bio.classList.remove("is-invalid")
