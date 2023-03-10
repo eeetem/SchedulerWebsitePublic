@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 const {getFirestore} = require("firebase-admin/firestore");
 admin.initializeApp();
 const db = getFirestore()
-
+db.settings({ ignoreUndefinedProperties: true })
 
  exports.WhosUp = functions.https.onCall((request, response) => {
    functions.logger.info("Reuqested WhosUP!");
