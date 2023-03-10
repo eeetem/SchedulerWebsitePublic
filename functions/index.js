@@ -122,7 +122,7 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
 
 
 exports.SubmitUserData = functions.https.onCall(async (data, context) => {
-    functions.logger.info("account was updated!");
+    functions.logger.info("Submiting User Data: "+data);
     if (!context.auth) {
         return {status: 'error', code: 401, message: 'Not signed in'}
     }
