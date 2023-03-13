@@ -4,14 +4,19 @@ import Navbar from '../components/Navbar.vue'
 <script>
 import {httpsCallable,getFunctions} from "firebase/functions";
 import app from "@/api/firebase";
-import {getAuth} from "firebase/auth";
+import {getAuth,updateProfile} from "firebase/auth";
 const functions = getFunctions(app);
 const auth = getAuth(app);
 const user = auth.currentUser;
+import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
 
+const storage = getStorage();
+const pfpRef = ref(storage, user.uid+"/pfp");
 export default {
   data() {
-    return {}
+    return{
+      ImageFile:null
+    }
   },
   methods: {
     swapContent(div1,div2){
@@ -36,6 +41,14 @@ export default {
       });
 
 
+    },
+    uploadImage(e){
+      this.ImageFile = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(this.ImageFile);
+      reader.onload = e =>{//load the image onto the page
+        document.getElementById("pfp").src = e.target.result;
+      };
     },
     submitUserData() {
       let userData = {};
@@ -79,6 +92,7 @@ export default {
         dataUpload(userData).then((result) => {
           console.log(result.data);
         });
+
     },
     submitProfileDetails() {
       let userData = {};
@@ -97,6 +111,12 @@ export default {
         dataUpload(userData).then((result) => {
           console.log(result.data);
         });
+        console.log(this.ImageFile)
+      uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
+        getDownloadURL(pfpRef).then((url)=>{
+          updateProfile(user,{displayName: null, photoURL: url})
+        });
+      });
     }
   }
 }
@@ -197,6 +217,10 @@ export default {
                         <label for="bio" class="form-label">Bio</label>
                         <textarea id="bio" class="form-control" placeholder="bio"></textarea>
                       </div>
+                    </div>
+                    <div>
+                      <img id="pfp" src="" class="uploading-image" />
+                      <input type="file" accept="image/jpeg" @change="uploadImage">
                     </div>
                     <div>
                       <br>
