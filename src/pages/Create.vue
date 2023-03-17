@@ -378,6 +378,7 @@ export default {
             var userData = {};
             userData["firstName"] = firstName.value
             userData["surName"] = surname.value
+            userData["username"] = username.value
             userData["dob"] = dob.value
             userData["courseCode"] = courseCode.value
             //todo prompt the user for this data and make it look nice

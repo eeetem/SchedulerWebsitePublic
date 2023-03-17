@@ -27,7 +27,7 @@ export default {
     },
     getUserData() {
       const dataRequest = httpsCallable(functions, 'GetUserData');
-      dataRequest({userid: '5BkAXbsoGEYpGQ6mVycqof71nBD3'}).then((result) => {
+      dataRequest().then((result) => {
         const userdata = result.data;
         console.log(userdata);
         document.getElementById('firstName').placeholder = userdata['firstName'];
@@ -94,31 +94,35 @@ export default {
         });
 
     },
-    submitProfileDetails() {
+    async submitProfileDetails() {
       let userData = {};
       let bio = document.getElementById('bio');
       let course = document.getElementById('course');
-        if (bio.value !== '') {
-          userData['bio'] = document.getElementById("bio").value;
-        } else {
-        }
-        if (course.value !== '') {
-          userData['courseCode'] = document.getElementById("course").value;
-        } else {
-        }
+      if (bio.value !== '') {
+        userData['bio'] = document.getElementById("bio").value;
+      } else {
+      }
+      if (course.value !== '') {
+        userData['courseCode'] = document.getElementById("course").value;
+      } else {
+      }
       console.log(userData);
-        const dataUpload = httpsCallable(functions, 'SubmitUserData');
-        dataUpload(userData).then((result) => {
-          console.log(result.data);
-        });
-        console.log(this.ImageFile)
-      uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
-        getDownloadURL(pfpRef).then((url)=>{
-          updateProfile(user,{displayName: null, photoURL: url})
+      await uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
+          getDownloadURL(pfpRef).then((url) => {
+          updateProfile(user, {displayName: null, photoURL: url})
+          userData["pfpURL"] = url;
         });
       });
+      const dataUpload = httpsCallable(functions, 'SubmitUserData');
+      dataUpload(userData).then((result) => {
+        console.log(result.data);
+      });
+      console.log(this.ImageFile)
+
     }
-  }
+
+
+    }
 }
 </script>
 

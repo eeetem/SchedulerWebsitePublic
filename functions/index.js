@@ -47,12 +47,16 @@ exports.NUIGscraper = functions.pubsub.schedule('every 24 hours').onRun((context
 
 
 exports.GetUserData = functions.https.onCall((data, context) => {
-    functions.logger.info("data requested for user: !"+data.userid);
-    if(data.userid === ""){
-        data.userid = context.auth.uid;
+    var id = "";
+    if(data == null || data.userid == null || data.userid === ""){
+        id = context.auth.uid;
+    }else{
+        id = data.userid;
     }
+    functions.logger.info("data requested for user: !"+id);
 
-    const query = admin.firestore().collection('UserData').doc(data.userid).get().then(async r => {
+
+    const query = admin.firestore().collection('UserData').doc(id).get().then(async r => {
        return r.get("publicData");
     });
     return query;
@@ -134,6 +138,7 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
     const bio = data["bio"];
     const username = data["username"];
     const pfpURL = data["pfpURL"];
+    const timetable = data["timetable"];
 
     const userDoc = db.collection('UserData').doc(context.auth.uid);
     await userDoc.update({
@@ -144,6 +149,7 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
         'publicData.bio': bio,
         'publicData.username': username,
         'publicData.pfpURL': pfpURL,
+        'publicData.timetable': timetable,
     });
     return {status: 'ok', code: 101, message: 'updated'}
 });
