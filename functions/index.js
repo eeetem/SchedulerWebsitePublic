@@ -1,24 +1,14 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
-const firebase = require('firebase');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const {getFirestore} = require("firebase-admin/firestore");
-const axios = require("axios");
-const cheerio = require("cheerio");
+//const axios = require("axios");
+//const cheerio = require("cheerio");
 
 admin.initializeApp();
 const db = getFirestore()
 db.settings({ ignoreUndefinedProperties: true })
 
- exports.WhosUp = functions.https.onCall((request, response) => {
-   functions.logger.info("Reuqested WhosUP!");
-   return {
-       "friendsOnline":[
-     {"name":"john","From":Date.now()-10 , "To":Date.now()+1000},
-     {"name":"larry","From":Date.now()+1000 , "To":Date.now()+2000},]
-   }
-
- });
 
 exports.GetFirends = functions.https.onCall((data, context) => {
     functions.logger.info("friends were requested!");
@@ -50,11 +40,11 @@ exports.GetFirends = functions.https.onCall((data, context) => {
     });
     return query;
 });
-/*
-exports.NUIGscraper = functions.pubsub.schedule('every day').onRun((context) => {
+
+exports.NUIGscraper = functions.pubsub.schedule('every 24 hours').onRun((context) => {
     return null;
 });
-*/
+
 
 exports.GetUserData = functions.https.onCall((data, context) => {
     functions.logger.info("data requested for user: !"+data.userid);
