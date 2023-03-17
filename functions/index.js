@@ -1,7 +1,11 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
+const firebase = require('firebase');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const {getFirestore} = require("firebase-admin/firestore");
+const axios = require("axios");
+const cheerio = require("cheerio");
+
 admin.initializeApp();
 const db = getFirestore()
 db.settings({ ignoreUndefinedProperties: true })
@@ -46,7 +50,11 @@ exports.GetFirends = functions.https.onCall((data, context) => {
     });
     return query;
 });
-
+/*
+exports.NUIGscraper = functions.pubsub.schedule('every day').onRun((context) => {
+    return null;
+});
+*/
 
 exports.GetUserData = functions.https.onCall((data, context) => {
     functions.logger.info("data requested for user: !"+data.userid);
@@ -112,7 +120,9 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
             surName :"sname",
             dob:"00/00/000",
             courseCode:"xx000",
-            bio:"i am a very ordinary person"
+            bio:"i am a very ordinary person",
+            username:"i am a very ordinary person",
+            pfpURL:"https://firebasestorage.googleapis.com/v0/b/schedulerwebsite.appspot.com/o/defaultPFP.png?alt=media&token=c5ae4a4e-b650-44a6-a257-c0caab08ac5f",
         }
     };
     return db.collection('UserData').doc(user.uid).set(data).then(() => {
@@ -132,6 +142,8 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
     const dob = data["dob"];
     const courseCode = data["courseCode"];
     const bio = data["bio"];
+    const username = data["username"];
+    const pfpURL = data["pfpURL"];
 
     const userDoc = db.collection('UserData').doc(context.auth.uid);
     await userDoc.update({
@@ -140,6 +152,8 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
         'publicData.firstName':firstName,
         'publicData.courseCode': courseCode,
         'publicData.bio': bio,
+        'publicData.username': username,
+        'publicData.pfpURL': pfpURL,
     });
     return {status: 'ok', code: 101, message: 'updated'}
 });
