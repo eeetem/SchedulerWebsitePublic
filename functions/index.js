@@ -115,6 +115,7 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
             dob:"00/00/000",
             courseCode:"xx000",
             bio:"i am a very ordinary person",
+            year :"1st",
             username:"i am a very ordinary person",
             pfpURL:"https://firebasestorage.googleapis.com/v0/b/schedulerwebsite.appspot.com/o/defaultPFP.png?alt=media&token=c5ae4a4e-b650-44a6-a257-c0caab08ac5f",
         }
@@ -137,6 +138,7 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
     const courseCode = data["courseCode"];
     const bio = data["bio"];
     const username = data["username"];
+    const year = data["year"];
     const pfpURL = data["pfpURL"];
     const timetable = data["timetable"];
 
@@ -149,6 +151,7 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
         'publicData.bio': bio,
         'publicData.username': username,
         'publicData.pfpURL': pfpURL,
+        'publicData.year': year,
         'publicData.timetable': timetable,
     });
     return {status: 'ok', code: 101, message: 'updated'}

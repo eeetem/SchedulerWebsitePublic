@@ -34,7 +34,7 @@ export default {
         document.getElementById('surName').placeholder = userdata['surName'];
         document.getElementById('username').placeholder = userdata['username'];
         document.getElementById('dob').placeholder = userdata['dob'];
-        document.getElementById('email').placeholder = userdata['email'];
+        document.getElementById('email').placeholder = user.email;
         document.getElementById('bio').placeholder = userdata['bio'];
         document.getElementById('course').placeholder = userdata['courseCode'];
 
@@ -96,16 +96,25 @@ export default {
     },
     async submitProfileDetails() {
       let userData = {};
-      let bio = document.getElementById('bio');
-      let course = document.getElementById('course');
-      if (bio.value !== '') {
-        userData['bio'] = document.getElementById("bio").value;
-      } else {
-      }
-      if (course.value !== '') {
-        userData['courseCode'] = document.getElementById("course").value;
-      } else {
-      }
+      const dataRequest = httpsCallable(functions, 'GetUserData');
+      dataRequest().then((result) => {
+        const userdata = result.data;
+        let bio = document.getElementById('bio');
+        let course = document.getElementById('course');
+        let year = document.getElementById("inputState").value;
+        if (bio.value !== '') {
+          userData['bio'] = document.getElementById("bio").value;
+        }
+        if (year.value !== 'Year') {
+          userData['year'] = document.getElementById("inputState").value;
+        }
+        else {
+          userData['year'] = userdata['year']; // returns users original year selected.
+        }
+        if (course.value !== '') {
+          userData['courseCode'] = document.getElementById("course").value;
+        }
+      });
       console.log(userData);
       await uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
           getDownloadURL(pfpRef).then((url) => {
@@ -119,10 +128,8 @@ export default {
       });
       console.log(this.ImageFile)
 
-    }
-
-
-    }
+    },
+  }
 }
 </script>
 
@@ -209,11 +216,11 @@ export default {
                     <div class="dropdown">
                       <label for="year" class="form-label">Year</label><br>
                       <select id="inputState" class="form-select">
-                        <option selected>Year</option>
-                        <option >1st</option>
-                        <option >2nd</option>
-                        <option >3rd</option>
-                        <option >4th</option>
+                        <option selected>Select Year</option>
+                        <option value="1st">1st</option>
+                        <option value="2nd">2nd</option>
+                        <option value="3rd">3rd</option>
+                        <option value="4th">4th</option>
                       </select>
                     </div>
                     <div class="row">
@@ -223,6 +230,8 @@ export default {
                       </div>
                     </div>
                     <div>
+                      <br>
+                      <p>Profile Picture</p>
                       <img id="pfp" src="" class="uploading-image" />
                       <input type="file" accept="image/jpeg" @change="uploadImage">
                     </div>
