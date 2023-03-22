@@ -106,18 +106,19 @@ export default {
         userData['courseCode'] = document.getElementById("course").value;
       } else {
       }
-      console.log(userData);
-      await uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
+
+     uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
           getDownloadURL(pfpRef).then((url) => {
           updateProfile(user, {displayName: null, photoURL: url})
           userData["pfpURL"] = url;
+            console.log(userData);
+            const dataUpload = httpsCallable(functions, 'SubmitUserData');
+            dataUpload(userData).then((result) => {
+              console.log(result.data);
+            });
         });
       });
-      const dataUpload = httpsCallable(functions, 'SubmitUserData');
-      dataUpload(userData).then((result) => {
-        console.log(result.data);
-      });
-      console.log(this.ImageFile)
+
 
     }
 
