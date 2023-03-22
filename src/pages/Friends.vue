@@ -11,19 +11,23 @@ const auth = getAuth(app);
 const user = auth.currentUser
 
 export default {
+  name: "app",
+  created() {
+    this.getUserData()
+    const auth = getAuth(app);
+    const user = auth.currentUser;
+    if (!user) {
+      //we're not logged in so go to log in screen
+      this.$router.push('/login');
+    }
+  },
+  components: {
+    FriendsList,
+  },
   data() {
     return{}
   },
   methods: {
-    created() {
-      const auth = getAuth(app);
-      const user = auth.currentUser;
-      if (!user) {
-        //we're not logged in so go to log in screen
-        this.$router.push('/login');
-      }
-
-    },
     getUserData(){
       const dataRequest = httpsCallable(functions, 'GetUserData');
       dataRequest().then((result) => {
@@ -45,10 +49,6 @@ export default {
 
     }
   },
-  name: "app",
-  components: {
-    FriendsList,
-  }
 }
 
 </script>
@@ -67,7 +67,6 @@ export default {
         <h7><b>Course: </b></h7><p id="course"></p>
         <h7><b>Year: </b></h7><p id="year"></p>
         <h7><b>Bio: </b></h7><p id="bio"></p>
-        <button @click="getUserData">Click</button>
 
       </div>
       <div className="col-lg-6 whoOn" align="left">
