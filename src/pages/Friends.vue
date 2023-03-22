@@ -2,59 +2,54 @@
 import Navbar from '../components/Navbar.vue'
 </script>
 <script>
-import app from "../api/firebase";
 import {getAuth} from "firebase/auth";
-import {getFunctions, httpsCallable} from 'firebase/functions';
 import FriendsList from "@/components/FriendsList.vue";
-
-const auth = getAuth(app);
-const user = auth.currentUser;
-
+import {httpsCallable,getFunctions} from "firebase/functions";
+import app from "@/api/firebase";
 const functions = getFunctions(app);
+const auth = getAuth(app);
+const user = auth.currentUser
+
 export default {
   name: "app",
+  created() {
+    this.getUserData()
+    const auth = getAuth(app);
+    const user = auth.currentUser;
+    if (!user) {
+      //we're not logged in so go to log in screen
+      this.$router.push('/login');
+    }
+  },
   components: {
     FriendsList,
   },
+  data() {
+    return{}
+  },
   methods: {
-    setUserData() {
-      let username = document.getElementById("username");
-      username.innerHTML = user.email;
-    },
-    mounted() {
-      this.setUserData()
-    },
-    created()
-      {
-        const auth = getAuth(app);
-        const user = auth.currentUser;
-        if (!user) {
-          //we're not logged in so go to log in screen
-          this.$router.push('/login');
-          return;
-        }
-        const friendsRequest = httpsCallable(functions, 'GetFirends');
-        friendsRequest().then((result) => {
-          // Read result of the Cloud Function.
-          const friendList = result.data;
-          for (const friendListKey in friendList) {
-            const dataRequest = httpsCallable(functions, 'GetUserData');
-            dataRequest({user}).then((result) => {
-              // Read result of the Cloud Function.
-              const userdata = result.data;
-              console.log(userdata);
-            });
-          }
-        });
-      }
-  },
-  addFriend() {
+    getUserData(){
+      const dataRequest = httpsCallable(functions, 'GetUserData');
+      dataRequest().then((result) => {
+        const userdata = result.data;
+        console.log(userdata);
+        document.getElementById('username').innerHTML = userdata['username'];
+        document.getElementById('bio').innerHTML = userdata['bio'];
+        document.getElementById('course').innerHTML = userdata['courseCode'];
+        document.getElementById('pfp').src = userdata['pfpURL'];
+        document.getElementById('year').innerHTML = userdata['year'];
 
-  },
-  removeFriend() {
+      });
+    },
+    addFriend() {
 
-  }
-};
+    }
+    ,
+    removeFriend() {
+
+    }
+  },
+}
 
 </script>
 <template>
@@ -64,21 +59,20 @@ export default {
   <div className="container-fluid">
     <div className="row row-no-gutters">
       <div className="col-lg-3 profile">
-        <h2>Your Profile</h2>
-        <img src="../assets/Grannygun.jpg" className="profile_pics rounded-circle" alt="Chania">
-        <h5 id="username">
-          Stephen O'Connor
-        </h5>
-        <router-link to="" className="btn btn-light" align="right">Edit Profile</router-link>
-        <p>Friends:<br>
-          Course: BCT<br>
-          Year: 2<br>
-        </p>data
+        <h2>My Profile</h2>
+        <img id="pfp" src="../assets/Grannygun.jpg" className="profile_pics rounded-circle" alt="Chania">
+        <h5 id="username"></h5>
+        <router-link to="/settings" className="btn btn-light" align="right">Edit</router-link><br>
+
+        <h7><b>Course: </b></h7><p id="course"></p>
+        <h7><b>Year: </b></h7><p id="year"></p>
+        <h7><b>Bio: </b></h7><p id="bio"></p>
+
       </div>
       <div className="col-lg-6 whoOn" align="left">
         <div id="app">
           <h2>Friends</h2>
-          <ul>
+          <ul className="list-group list-group-flush">
             <friends-list></friends-list>
           </ul>
         </div>
@@ -89,23 +83,19 @@ export default {
           <h2>Recommended Friends</h2>
           <ul className="list-group list-group-flush">
             <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle"
-                                                                        alt="Chania">
+                                                                        className="profile_pics rounded-circle">
               John Murphy
             </li>
             <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle"
-                                                                        alt="Chania">
+                                                                        className="profile_pics rounded-circle">
               Mary Jane
             </li>
             <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle"
-                                                                        alt="Chania">
+                                                                        className="profile_pics rounded-circle">
               Jon Doe
             </li>
             <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle"
-                                                                        alt="Chania">
+                                                                        className="profile_pics rounded-circle">
               Harry Barry
             </li>
           </ul>

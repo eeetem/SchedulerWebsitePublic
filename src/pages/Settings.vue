@@ -34,7 +34,7 @@ export default {
         document.getElementById('surName').placeholder = userdata['surName'];
         document.getElementById('username').placeholder = userdata['username'];
         document.getElementById('dob').placeholder = userdata['dob'];
-        document.getElementById('email').placeholder = userdata['email'];
+        document.getElementById('email').placeholder = user.email;
         document.getElementById('bio').placeholder = userdata['bio'];
         document.getElementById('course').placeholder = userdata['courseCode'];
 
@@ -106,8 +106,8 @@ export default {
         userData['courseCode'] = document.getElementById("course").value;
       } else {
       }
-
-     uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
+      console.log(userData);
+      await uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
           getDownloadURL(pfpRef).then((url) => {
           updateProfile(user, {displayName: null, photoURL: url})
           userData["pfpURL"] = url;
@@ -118,7 +118,7 @@ export default {
             });
         });
       });
-
+      console.log(this.ImageFile)
 
     }
 

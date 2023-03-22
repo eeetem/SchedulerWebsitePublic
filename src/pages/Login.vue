@@ -95,7 +95,7 @@ export default {
              aria-describedby="basic-addon1">
     </div>
     <div class="input-group mb-3">
-      <input v-model="password" type="text" class="form-control" placeholder="Password" aria-label="Password"
+      <input v-model="password" type="password" class="form-control" placeholder="Password" aria-label="Password"
              aria-describedby="basic-addon1">
     </div>
     <div id="loginCheck" style="position: center"></div>
