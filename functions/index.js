@@ -141,6 +141,7 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
     const year = data["year"];
     const pfpURL = data["pfpURL"];
     const timetable = data["timetable"];
+    const timetableJSON = data["timetableJSON"];
     const moduleRemoveOptions= data["moduleRemoveOptions"];
     const moduleList = data["moduleList"];
 
@@ -155,6 +156,7 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
         'publicData.pfpURL': pfpURL,
         'publicData.year': year,
         'publicData.timetable': timetable,
+        'publicData.timetableJSON':timetableJSON,
         'publicData.moduleRemoveOptions': moduleRemoveOptions,
         'publicData.moduleList': moduleList,
     });

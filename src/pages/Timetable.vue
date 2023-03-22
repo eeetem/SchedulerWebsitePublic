@@ -333,8 +333,70 @@ export default {
       dataUpload(userData).then((result) => {
         console.log(result.data);
       });
-    }
-    ,
+      this.sendJSON();
+    },
+
+    sendJSON() {
+      let timetableData;
+
+      for (let i = 9; i < 19; i++) {
+        let monday = i + "monday";
+        let tuesday = i + "tuesday";
+        let wednesday = i + "wednesday";
+        let thursday = i + "thursday";
+        let friday = i + "friday";
+
+        console.log(monday);
+        if (document.getElementById(monday).innerHTML != "") {
+          console.log("Monday Check :" + monday.toString())
+          const data = {
+            slot: monday.toString(),
+            name: document.getElementById(monday).innerText
+          }
+          timetableData += JSON.stringify(data, null, 2)
+        }
+        if (document.getElementById(tuesday).innerHTML != "") {
+          console.log("Tuesday Check")
+          const data = {
+            slot: tuesday.toString(),
+            name: document.getElementById(tuesday).innerText
+          }
+          timetableData += JSON.stringify(data, null, 2)
+        }
+        if (document.getElementById(wednesday).innerHTML != "") {
+          console.log("Wednesday Check")
+          const data = {
+            slot: wednesday.toString(),
+            name: document.getElementById(wednesday).innerText
+          }
+          timetableData += JSON.stringify(data, null, 2)
+        }
+        if (document.getElementById(thursday).innerHTML != "") {
+          console.log("Thursday Check")
+          const data = {
+            slot: thursday.toString(),
+            name: document.getElementById(thursday).innerText
+          }
+          timetableData += JSON.stringify(data, null, 2)
+        }
+        if (document.getElementById(friday).innerHTML != "") {
+          console.log("Friday Check")
+          const data = {
+            slot: friday.toString(),
+            name: document.getElementById(friday).innerText
+          }
+          timetableData += JSON.stringify(data, null, 2)
+        }
+      }
+      console.log("Saving")
+      console.log(timetableData);
+      var userData = {};
+      userData["timetableJSON"] = timetableData;
+      const dataUpload = httpsCallable(functions, 'SubmitUserData');
+      dataUpload(userData).then((result) => {
+        console.log(result.data);
+      });
+    },
 
     removeModule() {
       let selectedModule = document.getElementById("selectRemove").value
