@@ -143,11 +143,11 @@ import Navbar from '../components/Navbar.vue'
         </table>
       </div>
 
-      <div class="col-md-6" id="checkBoxes" style="width: 23%; padding-left: 10px">
+      <div class="col-md-6" id="checkBoxes" style="width: 300px; padding-left: 10px; margin-left: 40px;">
         <div class=" collapse" id="moduleOptions">
           <div class="card card-body">
             <h3>Module Options</h3>
-            <p>Select modules you want to display</p>
+            <p>Enter details:</p>
             <ul class="list-group" id="moduleList">
             </ul>
             <div class="input-group mb-3 timeSelect" style="margin-top:20px">
@@ -177,9 +177,38 @@ import Navbar from '../components/Navbar.vue'
                 <option value="friday">Friday</option>
               </select>
             </div>
+            <div id="moduleColor" class="mb-3">
+              <p><em>Choose a Colour:</em></p>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                       value="lightskyblue" checked>
+                <label class="form-check-label" for="inlineRadio1"
+                       style="width: 20px; height: 20px; border:solid; background-color: lightskyblue;"></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                       value="lightyellow">
+                <label class="form-check-label" for="inlineRadio2"
+                       style="width: 20px; height: 20px; border:solid; background-color: lightyellow;"></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                       value="palegreen">
+                <label class="form-check-label" for="inlineRadio3"
+                       style="width: 20px; height: 20px; border:solid; background-color: palegreen;"></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4"
+                       value="lightpink">
+                <label class="form-check-label" for="inlineRadio4"
+                       style="width: 20px; height: 20px; border:solid; background-color: lightpink;"></label>
+              </div>
+            </div>
             <div class="input-group mb-3" style="margin-top:1px">
-              <button class="btn btn-secondary" type="button" id="button-addon1" @click="addModule">Add</button>
-              <input type="text" class="form-control" id="addModuleInput">
+              <button class="btn btn-secondary" type="button" id="addModuleButton" @click="addModule">
+                Add
+              </button>
+              <input type="text" class="form-control" placeholder="Module Name" id="addModuleInput">
             </div>
             <div class="input-group mb-3" style="margin-top:1px">
               <button class="btn btn-secondary" type="button" id="button-addon1" @click="removeModule">Remove</button>
@@ -190,9 +219,9 @@ import Navbar from '../components/Navbar.vue'
             <div class="input-group mb-3">
               <div class="row">
                 <div class="col">
-                  <button class="btn btn-secondary" style="padding:5px; margin-top: 15px; width: 50px" type="button"
+                  <button class="btn btn-secondary" style="padding:7px; margin-top: 15px; width: 50x" type="button"
                           data-bs-toggle="collapse" data-bs-target="#moduleOptions"
-                          aria-expanded="false" aria-controls="moduleOptions" @click="newSave">Exit
+                          aria-expanded="false" aria-controls="moduleOptions" @click="newSave">Save
                   </button>
                 </div>
                 <div class="col">
@@ -239,17 +268,28 @@ export default {
       let list = slot + "List";
       let moduleListed = document.getElementById(module);
       let listedModule = document.getElementById(list);
+      const colorOptions = document.querySelectorAll('input[name="inlineRadioOptions"]');
+
+      let selectedColour;
 
       console.log("Table slot ID: " + slot);
       if (input !== "" && day !== "" && time !== "") {
         if (document.getElementById(slot).innerHTML == "") {
           moduleList.innerHTML += '<div id="' + slot + 'Opt"' + '>' + '<li class="list-group-item">' +
-              '<label class="form-check-label">' + input + '</label>' +
+              '<label>' + input + '</label>' +
               '</li>' + '</div>';
 
           moduleOption.innerHTML += '<option value=' + slot + ' id=' + slot + 'List' + '>' + input + '</option>';
 
           tableSlot.innerText = input;
+
+          for (const colorOption of colorOptions) {
+
+            if (colorOption.checked) {
+              tableSlot.style.backgroundColor = colorOption.value;
+              break;
+            }
+          }
           this.newSave();
         } else {
           console.log("NOT Clear")
@@ -258,13 +298,22 @@ export default {
           console.log("Clear")
           console.log(moduleList);
           moduleList.innerHTML += '<div id="' + slot + 'Opt"' + '>' + '<li class="list-group-item">' +
-              '<label class="form-check-label">' + input + '</label>' +
+              '<label>' + input + '</label>' +
               '</li>' + '</div>';
 
           moduleOption.innerHTML += '<option value=' + slot + ' id=' + slot + 'List' + '>' + input + '</option>';
 
           console.log("Get Slot:" + tableSlot);
           tableSlot.innerText = input;
+
+          for (const colorOption of colorOptions) {
+
+            if (colorOption.checked) {
+              tableSlot.style.backgroundColor = colorOption.value;
+              break;
+            }
+          }
+          console.log("Colour: " + selectedColour);
           this.newSave();
         }
         this.newSave();
@@ -276,9 +325,6 @@ export default {
       let moduleRemoveOptions = document.getElementById("selectRemove");
       let timetable = document.getElementById("timetable");
 
-      console.log("Module List:" + moduleList.innerHTML);
-      console.log("Module Remove:" + moduleRemoveOptions.innerHTML);
-
       var userData = {};
       userData["moduleRemoveOptions"] = moduleRemoveOptions.innerHTML;
       userData["moduleList"] = moduleList.innerHTML;
@@ -287,7 +333,8 @@ export default {
       dataUpload(userData).then((result) => {
         console.log(result.data);
       });
-    },
+    }
+    ,
 
     removeModule() {
       let selectedModule = document.getElementById("selectRemove").value
@@ -298,9 +345,11 @@ export default {
       console.log("CHOOSEN:" + selectedModule);
       let timetableSlot = document.getElementById(selectedModule);
       timetableSlot.innerHTML = ""
+      timetableSlot.style.backgroundColor = "";
       moduleListed.parentNode.removeChild(moduleListed)
       listedModule.parentNode.removeChild(listedModule)
-    },
+    }
+    ,
 
     loadTimetable() {
       console.log("Loading")
@@ -310,18 +359,18 @@ export default {
         let timetable = JSON.stringify(userData["timetable"]);
         let moduleList = JSON.stringify(userData["moduleList"]);
         let moduleRemove = JSON.stringify(userData["moduleRemoveOptions"]);
-        console.log("TIME" + timetable);
-        if(timetable.length!="") {
+
+        if (timetable.length != "") {
           this.setTimetable(timetable, moduleList, moduleRemove)
         }
       });
-    },
+    }
+    ,
 
-    setTimetable(timetable,moduleList,moduleRemove) {
+    setTimetable(timetable, moduleList, moduleRemove) {
       document.querySelector("#moduleList").innerHTML = JSON.parse(moduleList);
       document.getElementById("selectRemove").innerHTML = JSON.parse(moduleRemove);
       document.getElementById("timetable").innerHTML = JSON.parse(timetable);
-      console.log("Loaded Timetable: " + moduleList);
     }
   }
 }
