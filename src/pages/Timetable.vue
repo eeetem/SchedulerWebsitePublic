@@ -10,7 +10,7 @@ import Navbar from '../components/Navbar.vue'
     <div class="row">
       <div class="col-md-6" style=" width: 18%; padding: 10px;">
         <nav class="navbar">
-        <h3>Friends Online</h3>
+          <h3>Friends Online</h3>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#friendsList"
                   aria-controls="friendsList" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -18,20 +18,20 @@ import Navbar from '../components/Navbar.vue'
           <div id="friendsList">
             <ul class="list-group list-group-flush navbar-nav me-auto mb-4 mb-lg-0">
               <li class="list-group-item list-group-item-action col nav-item"><img src="../assets/img_chania.jpg"
-                                                                          class="profile_pics rounded-circle"
-                                                                          alt="Chania">Dennis
+                                                                                   class="profile_pics rounded-circle"
+                                                                                   alt="Chania">Dennis
               </li>
               <li class="list-group-item list-group-item-action col nav-item"><img src="../assets/egg.jpg"
-                                                                          class="profile_pics rounded-circle"
-                                                                          alt="Chania">Aaron
+                                                                                   class="profile_pics rounded-circle"
+                                                                                   alt="Chania">Aaron
               </li>
               <li class="list-group-item list-group-item-action col nav-item"><img src="../assets/Grannygun.jpg"
-                                                                          class="profile_pics rounded-circle"
-                                                                          alt="Chania">Tom
+                                                                                   class="profile_pics rounded-circle"
+                                                                                   alt="Chania">Tom
               </li>
               <li class="list-group-item list-group-item-action col nav-item"><img src="../assets/Grannygun.jpg"
-                                                                          class="profile_pics rounded-circle"
-                                                                          alt="Chania">Seamus
+                                                                                   class="profile_pics rounded-circle"
+                                                                                   alt="Chania">Seamus
               </li>
             </ul>
           </div>
@@ -184,7 +184,7 @@ import Navbar from '../components/Navbar.vue'
             <div class="input-group mb-3" style="margin-top:1px">
               <button class="btn btn-secondary" type="button" id="button-addon1" @click="removeModule">Remove</button>
               <select class="form-select" id="selectRemove">
-                <option selected>Choose</option>
+                <option selected>Choose...</option>
               </select>
             </div>
             <div class="input-group mb-3">
@@ -192,7 +192,7 @@ import Navbar from '../components/Navbar.vue'
                 <div class="col">
                   <button class="btn btn-secondary" style="padding:5px; margin-top: 15px; width: 50px" type="button"
                           data-bs-toggle="collapse" data-bs-target="#moduleOptions"
-                          aria-expanded="false" aria-controls="moduleOptions" @click="saveTimetable">Exit
+                          aria-expanded="false" aria-controls="moduleOptions" @click="newSave">Exit
                   </button>
                 </div>
                 <div class="col">
@@ -207,6 +207,14 @@ import Navbar from '../components/Navbar.vue'
   </body>
 </template>
 <script>
+import {httpsCallable, getFunctions} from "firebase/functions";
+import app from "@/api/firebase";
+import {getAuth, updateProfile} from "firebase/auth";
+
+const functions = getFunctions(app);
+const auth = getAuth(app);
+const user = auth.currentUser;
+
 let totalModuleCount;
 
 export default {
@@ -214,7 +222,7 @@ export default {
     return {}
   },
   mounted() {
-    this.loadTimetable(); //Loads timetable with page
+    this.loadTimetable() //Loads timetable with page
   },
   methods: {
 
@@ -242,7 +250,7 @@ export default {
           moduleOption.innerHTML += '<option value=' + slot + ' id=' + slot + 'List' + '>' + input + '</option>';
 
           tableSlot.innerText = input;
-          this.saveTimetable(input, slot);
+          this.newSave();
         } else {
           console.log("NOT Clear")
           moduleListed.parentNode.removeChild(moduleListed)
@@ -257,32 +265,28 @@ export default {
 
           console.log("Get Slot:" + tableSlot);
           tableSlot.innerText = input;
-          this.saveTimetable(input, slot);
+          this.newSave();
         }
+        this.newSave();
       }
     },
 
-    saveTimetable(moduleName, timeSlot) {
-      console.log("Saving")
-      const data = {
-        slot: timeSlot,
-        name: moduleName
-      }
-      console.log(data)
+    newSave() {
+      let moduleList = document.querySelector("#moduleList");
+      let moduleRemoveOptions = document.getElementById("selectRemove");
+      let timetable = document.getElementById("timetable");
 
-      const fs = require('fs');
-      const saveData = (data) => {
-        const finsihed = (error) => {
-          if (error) {
-            console.error(error)
-            return;
-          }
-        }
+      console.log("Module List:" + moduleList.innerHTML);
+      console.log("Module Remove:" + moduleRemoveOptions.innerHTML);
 
-        const timetableData = JSON.stringify(data, null, 2)
-        console.log(timetableData);
-        fs.writeFile('timetable.json', timetableData, finsihed)
-      }
+      var userData = {};
+      userData["moduleRemoveOptions"] = moduleRemoveOptions.innerHTML;
+      userData["moduleList"] = moduleList.innerHTML;
+      userData["timetable"] = timetable.innerHTML;
+      const dataUpload = httpsCallable(functions, 'SubmitUserData');
+      dataUpload(userData).then((result) => {
+        console.log(result.data);
+      });
     },
 
     removeModule() {
@@ -300,32 +304,24 @@ export default {
 
     loadTimetable() {
       console.log("Loading")
-      let moduleList = document.querySelector("#moduleList");
-      let moduleOption = document.getElementById("selectRemove");
-      fetch("timetable.json") //Gets data from this json file.(Not linked to server)
-          .then(response => response.json())
-          .then(data => {
-            for (var i = 0; i < data.length; i++) {
-              let tableSlot = document.getElementById(data[i].slot);
-              console.log("Name:" + data[i].moduleName);
-              moduleList.innerHTML += '<div id="' + data[i].slot + 'Opt"' + '>' + '<li class="list-group-item">' +
-                  '<label class="form-check-label">' + data[i].moduleName + '</label>' +
-                  '</li>' + '</div>';
-
-              moduleOption.innerHTML += '<option value=' + data[i].slot + ' id=' + data[i].slot + 'List' + '>' + data[i].moduleName + '</option>'
-              //" id="' + data[i].slot + 'List"' +
-              totalModuleCount = data.length;
-              tableSlot.innerHTML = data[i].moduleName;
-            }
-          })
+      const dataRequest = httpsCallable(functions, 'GetUserData');
+      dataRequest().then((result) => {
+        const userData = result.data;
+        let timetable = JSON.stringify(userData["timetable"]);
+        let moduleList = JSON.stringify(userData["moduleList"]);
+        let moduleRemove = JSON.stringify(userData["moduleRemoveOptions"]);
+        console.log("TIME" + timetable);
+        if(timetable.length!="") {
+          this.setTimetable(timetable, moduleList, moduleRemove)
+        }
+      });
     },
 
-    displayModule() {
-      if (document.getElementById("Software").checked) {
-        console.log("Checked");
-      } else {
-        console.log("Checked");
-      }
+    setTimetable(timetable,moduleList,moduleRemove) {
+      document.querySelector("#moduleList").innerHTML = JSON.parse(moduleList);
+      document.getElementById("selectRemove").innerHTML = JSON.parse(moduleRemove);
+      document.getElementById("timetable").innerHTML = JSON.parse(timetable);
+      console.log("Loaded Timetable: " + moduleList);
     }
   }
 }
@@ -343,10 +339,12 @@ th {
 .float-child {
   float: left;
 }
-.center{
+
+.center {
   margin-left: auto;
   margin-right: auto;
 }
+
 .whoOn {
   outline: 1px solid rgb(197, 197, 197);
 }

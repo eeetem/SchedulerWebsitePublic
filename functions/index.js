@@ -141,6 +141,8 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
     const year = data["year"];
     const pfpURL = data["pfpURL"];
     const timetable = data["timetable"];
+    const moduleRemoveOptions= data["moduleRemoveOptions"];
+    const moduleList = data["moduleList"];
 
     const userDoc = db.collection('UserData').doc(context.auth.uid);
     await userDoc.update({
@@ -153,6 +155,8 @@ exports.SubmitUserData = functions.https.onCall(async (data, context) => {
         'publicData.pfpURL': pfpURL,
         'publicData.year': year,
         'publicData.timetable': timetable,
+        'publicData.moduleRemoveOptions': moduleRemoveOptions,
+        'publicData.moduleList': moduleList,
     });
     return {status: 'ok', code: 101, message: 'updated'}
 });
