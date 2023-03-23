@@ -95,16 +95,26 @@ export default {
 
     },
     async submitProfileDetails() {
+      const dataRequest = httpsCallable(functions, 'GetUserData');
+      dataRequest().then((result) => {
+        const userdata = result.data;
+        if (year.value !== 'Year') {
+          userData['year'] = document.getElementById("inputState").value;
+        }
+        else {
+          userData['year'] = userdata['year']; // returns users original year selected.
+        }
+      });
+
       let userData = {};
       let bio = document.getElementById('bio');
       let course = document.getElementById('course');
+      let year = document.getElementById('inputState');
       if (bio.value !== '') {
         userData['bio'] = document.getElementById("bio").value;
-      } else {
       }
       if (course.value !== '') {
         userData['courseCode'] = document.getElementById("course").value;
-      } else {
       }
       console.log(userData);
       await uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
