@@ -34,12 +34,24 @@ export default {
         const userdata = result.data;
         console.log(userdata);
         document.getElementById('username').innerHTML = userdata['username'];
-        document.getElementById('bio').innerHTML = userdata['bio'];
-        document.getElementById('course').innerHTML = userdata['courseCode'];
         document.getElementById('pfp').src = userdata['pfpURL'];
-        document.getElementById('year').innerHTML = userdata['year'];
 
+        let course = document.createElement('p');
+        course.appendChild(document.createTextNode('Course: '));
+        course.appendChild(document.createTextNode(userdata['courseCode']));
+        document.getElementById('pCourse').appendChild(course);
+
+        let year = document.createElement('p');
+        year.appendChild(document.createTextNode('Year: '));
+        year.appendChild(document.createTextNode(userdata['year']));
+        document.getElementById('pYear').appendChild(year);
+
+        let bio = document.createElement('p');
+        bio.appendChild(document.createTextNode('Bio: '));
+        bio.appendChild(document.createTextNode(userdata['bio']));
+        document.getElementById('pBio').appendChild(bio);
       });
+
     },
     addFriend() {
 
@@ -62,17 +74,27 @@ export default {
         <h2>My Profile</h2>
         <img id="pfp" src="../assets/Grannygun.jpg" className="profile_pics rounded-circle" alt="Chania">
         <h5 id="username"></h5>
+
+        <div id="pCourse">
+        </div>
+        <div id="pYear">
+        </div>
+        <div id="pBio">
+        </div>
+
         <router-link to="/settings" className="btn btn-light" align="right">Edit</router-link><br>
 
-        <h7><b>Course: </b></h7><p id="course"></p>
-        <h7><b>Year: </b></h7><p id="year"></p>
-        <h7><b>Bio: </b></h7><p id="bio"></p>
 
       </div>
       <div className="col-lg-6 whoOn" align="left">
         <div id="app">
           <h2>Friends</h2>
           <ul className="list-group list-group-flush">
+            <div class="d-flex justify-content-center" id="spinner">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
             <friends-list></friends-list>
           </ul>
         </div>

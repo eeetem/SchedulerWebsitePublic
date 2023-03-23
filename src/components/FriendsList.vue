@@ -29,9 +29,9 @@ export default {
           friends.appendChild(friendsPfp);
           friends.appendChild(friendsName);
           document.getElementById('friends').appendChild(friends);
-          console.log(friendList);
       });
     }
+    document.getElementById('spinner').remove();
   });
 </script>
 

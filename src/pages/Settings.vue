@@ -224,6 +224,8 @@ export default {
                       </div>
                     </div>
                     <div>
+                      <br>
+                      <h6>Profile Picture Upload</h6>
                       <img id="pfp" src="" class="uploading-image" />
                       <input type="file" accept="image/jpeg" @change="uploadImage">
                     </div>
