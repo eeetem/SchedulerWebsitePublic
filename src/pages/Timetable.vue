@@ -337,7 +337,7 @@ export default {
     },
 
     sendJSON() {
-      let timetableData;
+      let timetableData = {};
 
       for (let i = 9; i < 19; i++) {
         let monday = i + "monday";
@@ -349,47 +349,28 @@ export default {
         console.log(monday);
         if (document.getElementById(monday).innerHTML != "") {
           console.log("Monday Check :" + monday.toString())
-          const data = {
-            slot: monday.toString(),
-            name: document.getElementById(monday).innerText
-          }
-          timetableData += JSON.stringify(data, null, 2)
+          timetableData[monday] = document.getElementById(monday).innerText;
         }
         if (document.getElementById(tuesday).innerHTML != "") {
           console.log("Tuesday Check")
-          const data = {
-            slot: tuesday.toString(),
-            name: document.getElementById(tuesday).innerText
-          }
-          timetableData += JSON.stringify(data, null, 2)
+          timetableData[tuesday] = document.getElementById(tuesday).innerText;
         }
         if (document.getElementById(wednesday).innerHTML != "") {
           console.log("Wednesday Check")
-          const data = {
-            slot: wednesday.toString(),
-            name: document.getElementById(wednesday).innerText
-          }
-          timetableData += JSON.stringify(data, null, 2)
+          timetableData[wednesday] = document.getElementById(wednesday).innerText;
         }
         if (document.getElementById(thursday).innerHTML != "") {
           console.log("Thursday Check")
-          const data = {
-            slot: thursday.toString(),
-            name: document.getElementById(thursday).innerText
-          }
-          timetableData += JSON.stringify(data, null, 2)
+          timetableData[thursday] = document.getElementById(thursday).innerText;
         }
         if (document.getElementById(friday).innerHTML != "") {
           console.log("Friday Check")
-          const data = {
-            slot: friday.toString(),
-            name: document.getElementById(friday).innerText
-          }
-          timetableData += JSON.stringify(data, null, 2)
+          timetableData[friday] = document.getElementById(friday).innerText;
         }
       }
       console.log("Saving")
       console.log(timetableData);
+      timetableData =JSON.stringify(timetableData);
       var userData = {};
       userData["timetableJSON"] = timetableData;
       const dataUpload = httpsCallable(functions, 'SubmitUserData');
