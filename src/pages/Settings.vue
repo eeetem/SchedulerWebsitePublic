@@ -117,18 +117,27 @@ export default {
         userData['courseCode'] = document.getElementById("course").value;
       }
       console.log(userData);
+      if(this.ImageFile != null){
       await uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
           getDownloadURL(pfpRef).then((url) => {
-          updateProfile(user, {displayName: null, photoURL: url})
-          userData["pfpURL"] = url;
-            console.log(userData);
-            const dataUpload = httpsCallable(functions, 'SubmitUserData');
-            dataUpload(userData).then((result) => {
-              console.log(result.data);
-            });
-        });
+              updateProfile(user, {displayName: null, photoURL: url})
+
+              userData["pfpURL"] = url;
+              const dataUpload = httpsCallable(functions, 'SubmitUserData');
+              dataUpload(userData).then((result) => {
+                console.log(result.data);
+              });
+
+          });
       });
-      console.log(this.ImageFile)
+      }
+      else{
+        console.log("no picture");
+        const dataUpload = httpsCallable(functions, 'SubmitUserData');
+        dataUpload(userData).then((result) => {
+          console.log(result.data);
+        });
+      }
 
     }
 
