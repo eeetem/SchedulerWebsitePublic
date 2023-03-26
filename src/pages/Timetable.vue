@@ -10,30 +10,22 @@ import Navbar from '../components/Navbar.vue'
     <div class="row">
       <div class="col-md-6" style=" width: 18%; padding: 10px;">
         <nav class="navbar">
-          <h3>Friends Online</h3>
+          <h3>Friend's Timetable</h3>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#friendsList"
                   aria-controls="friendsList" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div id="friendsList">
-            <ul class="list-group list-group-flush navbar-nav me-auto mb-4 mb-lg-0">
-              <li class="list-group-item list-group-item-action col nav-item"><img src="../assets/img_chania.jpg"
-                                                                                   class="profile_pics rounded-circle"
-                                                                                   alt="Chania">Dennis
-              </li>
-              <li class="list-group-item list-group-item-action col nav-item"><img src="../assets/egg.jpg"
-                                                                                   class="profile_pics rounded-circle"
-                                                                                   alt="Chania">Aaron
-              </li>
-              <li class="list-group-item list-group-item-action col nav-item"><img src="../assets/Grannygun.jpg"
-                                                                                   class="profile_pics rounded-circle"
-                                                                                   alt="Chania">Tom
-              </li>
-              <li class="list-group-item list-group-item-action col nav-item"><img src="../assets/Grannygun.jpg"
-                                                                                   class="profile_pics rounded-circle"
-                                                                                   alt="Chania">Seamus
-              </li>
-            </ul>
+          <div id="app">
+            <div id="app">
+              <ul className="list-group list-group-flush">
+                <div class="d-flex justify-content-center" id="spinner">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+                <friends-list></friends-list>
+              </ul>
+            </div>
           </div>
         </nav>
       </div>
@@ -239,6 +231,7 @@ import Navbar from '../components/Navbar.vue'
 import {httpsCallable, getFunctions} from "firebase/functions";
 import app from "@/api/firebase";
 import {getAuth, updateProfile} from "firebase/auth";
+import FriendsList from "@/components/FriendsList.vue";
 
 const functions = getFunctions(app);
 const auth = getAuth(app);
@@ -247,6 +240,10 @@ const user = auth.currentUser;
 let totalModuleCount;
 
 export default {
+  name: "app",
+  components: {
+    FriendsList,
+  },
   data() {
     return {}
   },
