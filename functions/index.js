@@ -48,40 +48,13 @@ exports.GetUserData = functions.https.onCall((data, context) => {
         id = data.userid;
     }
     functions.logger.info("data requested for user: !"+id);
+
+
     const query = admin.firestore().collection('UserData').doc(id).get().then(async r => {
-        const data = r.get("publicData");
-        const timetable = data["timetableJSON"];
-        const days = ["monday","tuesday","wednesday","thursday","friday"];
-
-        const date = new Date();
-        const hournow = date.getHours();
-        const daynow = date.getDay();
-
-        const timeNow = hournow+daynow;
-
-        let lastActivityBeforeNow;
-        let firstActivityAfterNow;
-
-        for (const day in days) {
-            if(day !== daynow) continue;
-            for (let i = 0; i < hournow; i++) {
-                for (var key in timetable) {
-                    var value = timetable[key];
-
-                }
-
-            }
-            for (let i = hournow; i < 18; i++) {
-
-
-            }
-        }
-
+        return r.get("publicData");
     });
     return query;
 });
-
-
 
 
 exports.AddFriend = functions.https.onCall((data, context) => {
@@ -103,8 +76,6 @@ exports.AddFriend = functions.https.onCall((data, context) => {
         admin.firestore().collection('UserData').doc(context.auth.uid).update({WantsToFriend:currentFriendList});
         return {status: 'OK', code: 100, message: 'Friend Request Added'}
     })
-
-
 
 });
     exports.RemoveFriend = functions.https.onCall((data, context) => {
@@ -131,6 +102,39 @@ exports.AddFriend = functions.https.onCall((data, context) => {
         }
         id = data.userid;
         functions.logger.info("UpStatus requested for user: !"+id);
+
+        const query = admin.firestore().collection('UserData').doc(id).get().then(async r => {
+            const data = r.get("publicData");
+            const timetable = data["timetableJSON"];
+            const days = ["monday","tuesday","wednesday","thursday","friday"];
+
+            const date = new Date();
+            const hournow = date.getHours();
+            const daynow = date.getDay();
+
+            const timeNow = hournow+daynow;
+
+            let lastActivityBeforeNow;
+            let firstActivityAfterNow;
+
+            for (const day in days) {
+                if(day !== daynow) continue;
+                for (let i = 0; i < hournow; i++) {
+                    for (var key in timetable) {
+                        var value = timetable[key];
+
+                    }
+
+                }
+                for (let i = hournow; i < 18; i++) {
+
+
+                }
+            }
+
+        });
+        return query;
+
 
 
     });
