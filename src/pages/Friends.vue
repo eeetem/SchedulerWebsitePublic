@@ -87,7 +87,7 @@ export default {
 
       </div>
       <div className="col-lg-6 whoOn" align="left">
-        <div id="app">
+        <div id="app" >
           <h2>Friends</h2>
           <ul className="list-group list-group-flush">
             <div class="d-flex justify-content-center" id="spinner">
@@ -95,7 +95,7 @@ export default {
                 <span class="visually-hidden">Loading...</span>
               </div>
             </div>
-            <friends-list></friends-list>
+            <keep-alive> <friends-list></friends-list> </keep-alive>
           </ul>
         </div>
 

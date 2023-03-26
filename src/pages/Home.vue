@@ -1,6 +1,16 @@
 <script setup>
 import Navbar from '../components/Navbar.vue'
 </script>
+<script>
+import FriendsList from "@/components/FriendsList.vue";
+
+export default {
+  name: "app",
+  components: {
+    FriendsList,
+  }
+}
+</script>
 <template>
   <header>
     <Navbar/>
@@ -34,24 +44,20 @@ import Navbar from '../components/Navbar.vue'
         </div>
 
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-3 friends " align="left">
-        <h1> Friends!</h1>
-        <div>
-          <img src="../assets/egg.jpg" class="profile_pics rounded-circle" alt="Chania" >
-          <h7> Aaron</h7>
-        </div><br>
-        <div>
-          <img src="../assets/Grannygun.jpg" class="profile_pics rounded-circle" alt="Chania" >
-          <h7> Stephen</h7>
-        </div> <br>
-        <div>
-          <img src="../assets/img_chania.jpg" class="profile_pics rounded-circle" alt="Chania" >
-          <h7> Dennis</h7>
-        </div><br>
-
+      <div class="col-sm-4 col-md-4 col-lg-3 profile">
+      <div id="app">
+        <h2>Friends</h2>
+        <ul className="list-group list-group-flush">
+          <div class="d-flex justify-content-center" id="spinner">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <friends-list></friends-list>
+        </ul>
+      </div>
       </div>
     </div>
-
   </div>
 
 </template>
