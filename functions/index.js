@@ -78,66 +78,92 @@ exports.AddFriend = functions.https.onCall((data, context) => {
     })
 
 });
-    exports.RemoveFriend = functions.https.onCall((data, context) => {
-        functions.logger.info("friends removal!", {structuredData: true});
-        if (!context.auth) {
-            functions.logger.info("not logged in!", {structuredData: true});
-            return {status: 'error', code: 401, message: 'Not signed in'}
+exports.RemoveFriend = functions.https.onCall((data, context) => {
+    functions.logger.info("friends removal!", {structuredData: true});
+    if (!context.auth) {
+        functions.logger.info("not logged in!", {structuredData: true});
+        return {status: 'error', code: 401, message: 'Not signed in'}
+    }
+
+    admin.firestore().collection('UserData').doc(context.auth.uid).get().then(r => {
+        const currentFriendList = r.get("WantsToFriend")
+        const index = currentFriendList.indexOf(data);
+        if (index > -1) { // only splice array when item is found
+            currentFriendList.splice(index, 1); // 2nd parameter means remove one item only
         }
+        admin.firestore().collection('UserData').doc(context.auth.uid).update({WantsToFriend:currentFriendList});
+        return {status: 'OK', code: 100, message: 'Friend Removal Added'}
+    })
+});
+exports.UpStatus =  functions.https.onCall(async (data, context) => {
 
-        admin.firestore().collection('UserData').doc(context.auth.uid).get().then(r => {
-            const currentFriendList = r.get("WantsToFriend")
-            const index = currentFriendList.indexOf(data);
-            if (index > -1) { // only splice array when item is found
-                currentFriendList.splice(index, 1); // 2nd parameter means remove one item only
-            }
-            admin.firestore().collection('UserData').doc(context.auth.uid).update({WantsToFriend:currentFriendList});
-            return {status: 'OK', code: 100, message: 'Friend Removal Added'}
-        })
-    });
-    exports.UpStatus =  functions.https.onCall((data, context) => {
-        var id = "";
-        if(data == null || data.userid == null || data.userid === ""){
-            return {status: 'ERROR', code: 401, message: 'no id provided'}
+    if (data == null) {
+        return {status: 'ERROR', code: 401, message: 'no id provided'}
+    }
+    const id = data;
+    functions.logger.info("UpStatus requested for user: !" + id);
+
+    const r = await admin.firestore().collection('UserData').doc(id).get()
+    const pdata = r.get("publicData");
+    const timetable = JSON.parse(pdata["timetableJSON"]);
+    const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+
+    const date = new Date();
+    const hournow = date.getHours();
+    const daynow = date.getDay();
+    const dayNowText = days[daynow];
+
+    const timeNow = hournow + dayNowText
+
+    functions.logger.info("Time Now:" + timeNow);
+    var onToday = {}
+    for (var key in timetable) {
+        var value = timetable[key];
+        if (key.charAt(0) === "9")//edgecase for 9
+        {
+            key = "0" + key;
         }
-        id = data.userid;
-        functions.logger.info("UpStatus requested for user: !"+id);
+        const time = key.slice(0, 2)
+        const day = key.replace(time, "")
+        if (day === dayNowText) {
+            onToday[time] = value;
+        }
+    }
+    let activityNow;
+    let firstActivityAfterNow;
+    let NextFree;
+    let NextBusy;
 
-        const query = admin.firestore().collection('UserData').doc(id).get().then(async r => {
-            const data = r.get("publicData");
-            const timetable = data["timetableJSON"];
-            const days = ["monday","tuesday","wednesday","thursday","friday"];
-
-            const date = new Date();
-            const hournow = date.getHours();
-            const daynow = date.getDay();
-
-            const timeNow = hournow+daynow;
-
-            let lastActivityBeforeNow;
-            let firstActivityAfterNow;
-
-            for (const day in days) {
-                if(day !== daynow) continue;
-                for (let i = 0; i < hournow; i++) {
-                    for (var key in timetable) {
-                        var value = timetable[key];
-
-                    }
-
-                }
-                for (let i = hournow; i < 18; i++) {
-
-
-                }
+    if(onToday[hournow] !=null){
+        activityNow = [hournow]
+        for (let i = hournow+1; i < 18; i++) {
+            if(onToday[i] == null){
+                NextFree = i;
             }
+        }
+    }else {
+        for (let i = hournow + 1; i < 18; i++) {
+            if (onToday[i] != null) {
+                NextBusy = i;
+                firstActivityAfterNow = onToday[i]
+                break;
+            }
+        }
+    }
+    var response = {}
+    if(activityNow != null){
+        response["status"] = "busy"
+        response["activity"] = activityNow
+        response["freeIn"] = NextFree
+    }else{
+        response["status"] = "free"
+        response["nextactivity"] = firstActivityAfterNow
+        response["busyIn"] = NextBusy
+    }
+    return {status: 'OK', code: 100, response:response}
 
-        });
-        return query;
 
-
-
-    });
+});
 
 
 exports.InitiateUser = functions.auth.user().onCreate((user) => {
@@ -156,8 +182,8 @@ exports.InitiateUser = functions.auth.user().onCreate((user) => {
         }
     };
     return db.collection('UserData').doc(user.uid).set(data).then(() => {
-         return {status: 'OK', code: 100, message: 'User Created'};
-     });
+        return {status: 'OK', code: 100, message: 'User Created'};
+    });
 });
 
 
@@ -203,7 +229,7 @@ async function AreFriends(id1,id2){
     let result1;
     let result2;
     db.collection('UserData').doc(id1).get().then(r=>{
-       result1 = r;
+        result1 = r;
     });
     db.collection('UserData').doc(id2).get().then(r=>{
         result2 = r;

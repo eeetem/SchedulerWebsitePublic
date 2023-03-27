@@ -3,7 +3,16 @@ import Navbar from '../components/Navbar.vue'
 </script>
 <script>
 import FriendsList from "@/components/FriendsList.vue";
-
+import {getFunctions, httpsCallable} from 'firebase/functions';
+import {getAuth} from "firebase/auth";
+import app from "@/api/firebase";
+const auth = getAuth(app);
+const user = auth.currentUser;
+const functions = getFunctions(app);
+const upStatus = httpsCallable(functions, 'UpStatus');
+upStatus(user.uid).then((result) => {
+  console.log(result.data.response);
+});
 export default {
   name: "app",
   components: {
