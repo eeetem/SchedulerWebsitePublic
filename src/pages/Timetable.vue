@@ -245,7 +245,8 @@ export default {
     FriendsList,
   },
   data() {
-    return {}
+    return {
+    }
   },
   mounted() {
     this.loadTimetable() //Loads timetable with page
@@ -425,6 +426,9 @@ th {
   width: 100px;
 }
 
+td{
+ width: 500px;
+}
 .float-child {
   float: left;
 }

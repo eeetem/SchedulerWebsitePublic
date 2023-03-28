@@ -18,6 +18,9 @@ export default {
       ImageFile:null
     }
   },
+  mounted() {
+    document.getElementById("v-pills-home-tab").click();
+  },
   methods: {
     swapContent(div1,div2){
       let divA = document.getElementById(div1);
