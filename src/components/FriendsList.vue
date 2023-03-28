@@ -13,8 +13,14 @@
       <div style="text-align: center; padding: 10px;" class="blockquote">Add Friend</div>
       <div class="input-group mb-3" style="width:300px; margin: auto;">
         <input id="friendName" type="text" class="form-control" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="addFriends">Search</button>
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="addFriends">Add</button>
       </div>
+    </div>
+  </div>
+  <div id="addButtonActive" style="display: none; padding: 30px">
+    <div class="input-group mb-3" style="width:200px; margin: auto;">
+      <input id="friendNameSelection" type="text" class="form-control" placeholder="Add Friend" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="addFriends">Add</button>
     </div>
   </div>
 </template>
@@ -48,6 +54,7 @@ friendsRequest().then((result) => {
         friends.appendChild(friendsPfp);
         friends.appendChild(friendsName);
         document.getElementById('friends').appendChild(friends);
+        document.getElementById("addButtonActive").style.display = 'block';
       });
     }
   } else {
@@ -67,13 +74,17 @@ export default {
       document.getElementById("searchInput").style.display = 'block';
     },
 
-    addFriends(){ //Not linked to server
+    addFriends(){
       let name = document.getElementById("friendName").value;
+      if(name == ""){
+        name = document.getElementById("friendNameSelection").value;
+      }
       console.log("NAME:" + name);
       const addFriendRequest = httpsCallable(functions, 'AddFriend');
       addFriendRequest(name).then((result) => {
         console.log(result.data);
       });
+      location.reload();
     },
   }
 }
