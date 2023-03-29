@@ -54,6 +54,7 @@ export default {
               friends.classList.add("list-group-item-action");
               friends.appendChild(friendsPfp);
               friends.appendChild(friendsName);
+              friends.style.paddingTop ="20px";
               document.getElementById('friendsName').appendChild(friends);
 
               const upStatus = httpsCallable(functions, 'UpStatus');
@@ -75,21 +76,21 @@ export default {
 
                 if(availableNext == null){
                   availableNext = "All Day";
-                  nextAvailable = '<div style="display: inline-block;">' + availableNext + '</div>'
+                  nextAvailable = '<div style="padding-top: 20px">' + availableNext + '</div>'
                 }
                 else{
-                  nextAvailable = '<div style="display: inline-block;">' + availableNext +":00" + '</div>'
+                  nextAvailable = '<div style="padding-top: 20px">' + availableNext +":00" + '</div>'
                 }
 
                 if(nextActivity == null){
                   nextActivity = "Tomorrow"
-                  nextModule = '<div style="display: inline-block;">' + nextActivity + '</div>'
+                  nextModule = '<div style="padding-top: 20px">' + nextActivity + '</div>'
                 }
                 else{
-                  nextModule = '<div style="display: inline-block;">' + nextActivity + " at " + nextActivityTime + ":00" + '</div>'
+                  nextModule = '<div style="padding-top: 20px">' + nextActivity + " at " + nextActivityTime + ":00" + '</div>'
                 }
 
-                let statusInformation = '<div style="display: inline-block;">' + available +
+                let statusInformation = '<div style="padding-top: 20px">' + available +
                     '<div class="rounded-circle" style="background-color: green; width: 40px; height: 40x;"></div></div>';
 
                 document.getElementById("nextActivity").innerHTML += nextModule;
@@ -99,7 +100,7 @@ export default {
             });
           }
         } else {
-
+            document.getElementById("noFriends").style.display = 'block';
         }
       });
     }
@@ -154,6 +155,11 @@ export default {
                 </div>
               </div>
             </div>
+          <div id="noFriends" style="display: none; padding: 20px">
+            <h3 style="text-align: center">Welcome to Scheduler</h3>
+            <p style="text-align: center">This is where you can view your Friends activity</p>
+            <p style="text-align: center">Add Friends to get started!</p>
+          </div>
         </div>
 
       </div>
