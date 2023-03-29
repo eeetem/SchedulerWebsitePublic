@@ -52,16 +52,22 @@ export default {
             const dataRequest = httpsCallable(functions, 'GetUserData');
             dataRequest({userid: friendList[friendListKey]}).then((result) => {
               const userdata = result.data;
-              let friends = document.createElement("li");// creating the elements
+              let friends = document.createElement("a");// creating the elements
               let friendsPfp = document.createElement("img");
               let friendsName = document.createTextNode(userdata['username']);
-              friendsPfp.style.height = "70px";
-              friendsPfp.style.width = "70px";
-              friendsPfp.style.padding = "20px";
+              friendsPfp.style.height = "75px";
+              friendsPfp.style.width = "75px";
               friendsPfp.classList.add("rounded-circle");
               friendsPfp.src += userdata['pfpURL'];
               friends.classList.add("list-group-item");
               friends.classList.add("list-group-item-action");
+              friends.addEventListener("click",function(){
+                const friendUID = userdata['username'];
+                console.log(friendUID);
+              });
+              friends.classList.add("list-group-item");
+              friends.classList.add("list-group-item-action");
+              friends.setAttribute("href","/friendsProfile"+"?"+userdata['username']);
               friends.appendChild(friendsPfp);
               friends.appendChild(friendsName);
               friends.style.border = "hidden";

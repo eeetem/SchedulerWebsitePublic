@@ -98,16 +98,6 @@ export default {
 
     },
     async submitProfileDetails() {
-      const dataRequest = httpsCallable(functions, 'GetUserData');
-      dataRequest().then((result) => {
-        const userdata = result.data;
-        if (year.value !== 'Year') {
-          userData['year'] = document.getElementById("inputState").value;
-        }
-        else {
-          userData['year'] = userdata['year']; // returns users original year selected.
-        }
-      });
 
       let userData = {};
       let bio = document.getElementById('bio');
@@ -118,6 +108,15 @@ export default {
       }
       if (course.value !== '') {
         userData['courseCode'] = document.getElementById("course").value;
+      }
+      if (year.value !== 'Year') {
+        userData['year'] = document.getElementById("inputState").value;
+      }else {
+        const dataRequest = httpsCallable(functions, 'GetUserData');
+        dataRequest().then((result) => {
+          const userdata = result.data;
+            userData['year'] = userdata['year'];
+        });
       }
       console.log(userData);
       if(this.ImageFile != null){

@@ -56,6 +56,9 @@ export default {
             <li class="nav-item">
               <router-link to="/settings" class="nav-link">Settings</router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/friendsProfile" class="nav-link">FriendsPage</router-link>
+            </li>
           </ul>
           <h6 id="currentUser" style="padding-right: 30px">
           </h6>

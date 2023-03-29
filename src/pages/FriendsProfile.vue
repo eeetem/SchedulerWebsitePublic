@@ -13,7 +13,7 @@ const user = auth.currentUser
 export default {
   name: "app",
   created() {
-    this.getUserData()
+    this.getUserData(this.getUserName())
     const auth = getAuth(app);
     const user = auth.currentUser;
     if (!user) {
@@ -28,9 +28,9 @@ export default {
     return{}
   },
   methods: {
-    getUserData(){
+    getUserData(getUserName){
       const dataRequest = httpsCallable(functions, 'GetUserData');
-      dataRequest().then((result) => {
+      dataRequest(getUserName).then((result) => {
         const userdata = result.data;
         console.log(userdata);
         document.getElementById('username').innerHTML = userdata['username'];
@@ -53,7 +53,12 @@ export default {
       });
 
     },
-
+    getUserName(){
+      const params = window.location.search;
+      let newparams = params.replace("?","");
+      console.log(newparams);
+      return newparams;
+    },
     addFriend() {
 
     }
@@ -72,7 +77,6 @@ export default {
   <div className="container-fluid">
     <div className="row row-no-gutters">
       <div className="col-lg-3 profile">
-        <h2>My Profile</h2>
         <img id="pfp" src="../assets/Grannygun.jpg" className="profile_pics rounded-circle" alt="Chania">
         <h5 id="username"></h5>
 
@@ -83,53 +87,12 @@ export default {
         <div id="pBio">
         </div>
 
-        <router-link to="/settings" className="btn btn-light" align="right">Edit</router-link><br>
-
-
-      </div>
-      <div className="col-lg-6 whoOn" align="left">
-        <div id="app" >
-          <h2>Friends</h2>
-          <ul className="list-group list-group-flush">
-            <div class="d-flex justify-content-center" id="spinner">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </div>
-            <keep-alive> <friends-list onpagehide="" ></friends-list> </keep-alive>
-          </ul>
-        </div>
-
-      </div>
-      <div className="col-lg-3 friends " align="left">
-        <div>
-          <h2>Recommended Friends</h2>
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle">
-              John Murphy
-            </li>
-            <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle">
-              Mary Jane
-            </li>
-            <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle">
-              Jon Doe
-            </li>
-            <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle">
-              Harry Barry
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 .whoOn {
   outline: 1px solid rgb(197, 197, 197);
 }
@@ -155,6 +118,4 @@ export default {
   background-color: #e80d0d;
   width: 100px;
 }
-
-
 </style>

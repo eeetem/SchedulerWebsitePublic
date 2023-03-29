@@ -28,4 +28,5 @@ export default [
     {path: "/create" , component: loadPage("Create")},
     {path: "/timetable" , component: loadPage("Timetable"), beforeEnter: isAuth},
     {path: "/settings" , component: loadPage("Settings"), beforeEnter: isAuth},
+    {path: "/friendsProfile" , component: loadPage("FriendsProfile"), beforeEnter: isAuth},
 ]
