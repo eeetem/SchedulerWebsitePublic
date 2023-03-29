@@ -143,7 +143,7 @@ export default {
             }
             console.log(userData);
             if (this.ImageFile != null) {
-              await uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
+                uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
                 getDownloadURL(pfpRef).then((url) => {
                   updateProfile(user, {displayName: null, photoURL: url})
 
