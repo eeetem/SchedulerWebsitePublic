@@ -13,10 +13,96 @@ const upStatus = httpsCallable(functions, 'UpStatus');
 upStatus(user.uid).then((result) => {
   console.log(result.data.response);
 });
+
+let friendUserID;
+
 export default {
   name: "app",
   components: {
     FriendsList,
+  },
+
+  mounted() {
+    this.friendsActivity();
+  },
+
+  methods:{
+    friendsActivity(){
+      let available;
+      let availableNext;
+      let currentActivity;
+      let nextActivity;
+      let nextActivityTime;
+
+      const friendsRequest = httpsCallable(functions, 'GetFirends');
+      friendsRequest().then((result) => {
+        const friendList = result.data;
+        if (friendList.length != 0) {
+          for (const friendListKey in friendList) {
+            const dataRequest = httpsCallable(functions, 'GetUserData');
+            dataRequest({userid: friendList[friendListKey]}).then((result) => {
+              const userdata = result.data;
+              let friends = document.createElement("li");// creating the elements
+              let friendsPfp = document.createElement("img");
+              let friendsName = document.createTextNode(userdata['username']);
+              friendUserID = friendList[friendListKey];
+              friendsPfp.style.height = "30px";
+              friendsPfp.style.width = "30px";
+              friendsPfp.classList.add("rounded-circle");
+              friendsPfp.src += userdata['pfpURL'];
+              friends.classList.add("list-group-item");
+              friends.classList.add("list-group-item-action");
+              friends.appendChild(friendsPfp);
+              friends.appendChild(friendsName);
+              document.getElementById('friendsName').appendChild(friends);
+
+              const upStatus = httpsCallable(functions, 'UpStatus');
+              upStatus(friendUserID).then((result) => {
+                console.log(result.data.response);
+                available = result.data.response['status'];
+                availableNext = result.data.response['freeIn'];
+                currentActivity = result.data.response["activity"];
+                nextActivity = result.data.response["nextactivity"];
+                nextActivityTime = result.data.response["busyIn"];
+                console.log("Data " + available);
+
+                let nextAvailable;
+                let nextModule;
+
+                if(available == "busy"){
+                  available = currentActivity;
+                }
+
+                if(availableNext == null){
+                  availableNext = "All Day";
+                  nextAvailable = '<div style="display: inline-block;">' + availableNext + '</div>'
+                }
+                else{
+                  nextAvailable = '<div style="display: inline-block;">' + availableNext +":00" + '</div>'
+                }
+
+                if(nextActivity == null){
+                  nextActivity = "Tomorrow"
+                  nextModule = '<div style="display: inline-block;">' + nextActivity + '</div>'
+                }
+                else{
+                  nextModule = '<div style="display: inline-block;">' + nextActivity + " at " + nextActivityTime + ":00" + '</div>'
+                }
+
+                let statusInformation = '<div style="display: inline-block;">' + available +
+                    '<div class="rounded-circle" style="background-color: green; width: 40px; height: 40x;"></div></div>';
+
+                document.getElementById("nextActivity").innerHTML += nextModule;
+                document.getElementById('availabilityNow').innerHTML += statusInformation;
+                document.getElementById("availabilityNext").innerHTML += nextAvailable;
+              });
+            });
+          }
+        } else {
+
+        }
+      });
+    }
   }
 }
 </script>
@@ -24,9 +110,10 @@ export default {
   <header>
     <Navbar/>
   </header>
+  <body style="height: 100%">
   <div class="container-fluid">
     <div class="row row-no-gutters">
-      <div class="col-sm-4 col-md-4 col-lg-3 profile">
+      <div class="col-sm-4 col-md-4 col-lg-2 profile" style="height: 600px">
         <h1>Profile</h1>
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
@@ -40,16 +127,33 @@ export default {
           </li>
         </ul>
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-6 whoOn">
-        <h1 align="center">Who's On</h1>
-        <div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item list-group-item-action">Aaron is available</li>
-            <li class="list-group-item list-group-item-action">Dennis will be available in 10 minutes </li>
-            <li class="list-group-item list-group-item-action">Stephen is not available today at anytime</li>
-            <li class="list-group-item list-group-item-action">Paul: Next time available in 10 hours and 45 minutes</li>
+      <div class="col-sm-3 col-md-3 col-lg-7 whoOn">
+        <h1 align="center">Who's Available</h1>
+        <div id="friendsOnline">
+          <div class="row">
+            <div class="col" style="text-align: left; padding: 20px;">
+              <h7 style="display: inline-block" class="navbar-brand" ><strong>Friends</strong></h7>
+              <div id="friendsName" style="padding-top: 20px; margin-left:10px">
+              </div>
+            </div>
 
-          </ul>
+            <div class="col" style="text-align: center; padding: 20px">
+              <h7 style="display: inline-block"><strong>Status</strong></h7>
+              <div id="availabilityNow" style="padding-top: 20px">
+              </div>
+            </div>
+
+            <div class="col" style="text-align: right; padding: 20px">
+              <h7 style="display: inline-block;"><strong>Available</strong></h7>
+              <div id="availabilityNext" style="padding-top: 20px">
+              </div>
+            </div>
+              <div class="col" style="text-align: right; padding: 20px">
+                <h7 style="display: inline-block;"><strong>Next module</strong></h7>
+                <div id="nextActivity" style="padding-top: 20px">
+                </div>
+              </div>
+            </div>
         </div>
 
       </div>
@@ -68,17 +172,14 @@ export default {
       </div>
     </div>
   </div>
-
+  <footer>
+    <div style="background-color: grey">
+    </div>
+  </footer>
+  </body>
 </template>
 
 <style scoped>
-
-.whoOn{
-  outline: 1px solid rgb(197, 197, 197);
-}
-.profile{
-  outline: 1px solid rgb(197, 197, 197);
-}
 
 .friends{
   outline:1px solid rgb(197, 197, 197);
@@ -100,5 +201,7 @@ export default {
 .nav-link{
   color: #181818;
 }
+
+
 
 </style>

@@ -156,7 +156,7 @@ exports.UpStatus =  functions.https.onCall(async (data, context) => {
         response["activity"] = activityNow
         response["freeIn"] = NextFree
     }else{
-        response["status"] = "free"
+        response["status"] = "Available"
         response["nextactivity"] = firstActivityAfterNow
         response["busyIn"] = NextBusy
     }
