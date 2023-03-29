@@ -11,10 +11,6 @@ import Navbar from '../components/Navbar.vue'
       <div class="col-md-6" style=" width: 18%; padding: 10px;">
         <nav class="navbar">
           <h3>Friend's Timetable</h3>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#friendsList"
-                  aria-controls="friendsList" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
           <div id="app">
             <div id="app">
               <ul className="list-group list-group-flush">
