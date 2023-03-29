@@ -38,14 +38,38 @@ exports.GetFirends = functions.https.onCall((data, context) => {
     });
     return query;
 });
-
+async function UsernameToId(username) {
+    functions.logger.debug("searching for: "+username);
+    const snapshot = await admin.firestore().collection('UserData').where('publicData.username', '==', username).get();
+    if (snapshot.empty) {
+        functions.logger.info("no matches");
+        return;
+    }
+    functions.logger.info("users found: "+snapshot.size);
+    //this just returns one result
+    var res;
+    snapshot.forEach(result => {
+        res = result;//this is ass but figuring out how to get just the first element without typescript is hellish
+    })
+    return res.id;
+}
+exports.UserToID = functions.https.onCall(async (data, context) => {
+    functions.logger.debug("starting: "+data);
+    const q = await UsernameToId(data);
+    functions.logger.debug("request ran: "+q);
+    return q;
+});
 
 exports.GetUserData = functions.https.onCall((data, context) => {
     var id = "";
-    if(data == null || data.userid == null || data.userid === ""){
+    if(data == null){
         id = context.auth.uid;
-    }else{
+    }else if (data.userid != null && data.userid !== ""){
         id = data.userid;
+    }else if (data.username != null && data.username !== ""){
+        id = UsernameToId(data.username)
+    }else{
+    return {status: 'error', code: 401, message: 'Bad Request'}
     }
     functions.logger.info("data requested for user: !"+id);
 
@@ -57,25 +81,33 @@ exports.GetUserData = functions.https.onCall((data, context) => {
 });
 
 
-exports.AddFriend = functions.https.onCall((data, context) => {
+exports.AddFriend = functions.https.onCall(async (data, context) => {
     functions.logger.info("friend request!");
     if (!context.auth) {
         functions.logger.info("not logged in!");
         return {status: 'error', code: 401, message: 'Not signed in'}
     }
-    functions.logger.info("user "+context.auth.uid+" adding"+data);
+    await UsernameToId("T1nkey")
+    functions.logger.info("user " + context.auth.uid + " adding" + data);
     //todo notify other user of friend request
-    if(!admin.firestore().collection('UserData').doc(data).get().exists()){
-        functions.logger.info("user with id:"+data+"does not exist");
-        return {status: 'error', code: 401, message: 'User does not exist'}
+    var response = await admin.firestore().collection('UserData').doc(data).get();
+    if (response.data() == null) {
+        functions.logger.info("user with id:" + data + "does not exist, searching username");
+        data = await UsernameToId(data);
+        if(data == null || data === "") {
+            return {status: 'error', code: 401, message: 'User does not exist'}
+        }
+        response = await admin.firestore().collection('UserData').doc(data).get();
+        if (response.data() == null) {
+            return {status: 'error', code: 401, message: 'User does not exist'}
+        }
     }
 
-    admin.firestore().collection('UserData').doc(context.auth.uid).get().then(r => {
-        const currentFriendList = r.get("WantsToFriend")
+        const currentFriendList = response.get("WantsToFriend")
         currentFriendList.push(data)
-        admin.firestore().collection('UserData').doc(context.auth.uid).update({WantsToFriend:currentFriendList});
+        await admin.firestore().collection('UserData').doc(context.auth.uid).update({WantsToFriend: currentFriendList});
         return {status: 'OK', code: 100, message: 'Friend Request Added'}
-    })
+
 
 });
 exports.RemoveFriend = functions.https.onCall((data, context) => {
@@ -161,8 +193,6 @@ exports.UpStatus =  functions.https.onCall(async (data, context) => {
         response["busyIn"] = NextBusy
     }
     return {status: 'OK', code: 100, response:response}
-
-
 });
 
 

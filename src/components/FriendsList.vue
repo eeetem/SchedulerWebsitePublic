@@ -26,11 +26,12 @@
 </template>
 
 <script>
-import {httpsCallable, getFunctions} from "firebase/functions";
+import {httpsCallable, getFunctions,connectFunctionsEmulator} from "firebase/functions";
 import app from "@/api/firebase";
 import {getAuth} from "firebase/auth";
 
-const functions = getFunctions(app);
+const functions = getFunctions(app)
+connectFunctionsEmulator(functions, "localhost", 5001);
 const auth = getAuth(app);
 const user = auth.currentUser;
 
