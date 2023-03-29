@@ -382,7 +382,6 @@ export default {
             userData["dob"] = dob.value
             userData["courseCode"] = courseCode.value
             userData['year'] = year.value;
-            //todo prompt the user for this data and make it look nice
             await new Promise(r => setTimeout(r, 2000));//sleep for 2 seconds in order to let the server create the user first
             const dataUpload = httpsCallable(functions, 'SubmitUserData');
             dataUpload(userData).then((result) => {

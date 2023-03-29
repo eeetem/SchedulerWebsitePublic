@@ -4,7 +4,7 @@
     <div style="text-align: center; padding-top: 10px;" class="blockquote">
       You have no friends added!
       <div style="padding: 30px;">
-        <button type="button" class="btn btn-info" @click="searchFriendInput">Add Friends</button>
+        <button type="button" class="btn btn-outline-primary" @click="searchFriendInput">Add Friends</button>
       </div>
     </div>
     </div>
@@ -13,24 +13,25 @@
       <div style="text-align: center; padding: 10px;" class="blockquote">Add Friend</div>
       <div class="input-group mb-3" style="width:300px; margin: auto;">
         <input id="friendName" type="text" class="form-control" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="addFriends">Add</button>
+        <button class="btn btn-primary" type="button" id="button-addon2" @click="addFriends">Add</button>
       </div>
     </div>
   </div>
   <div id="addButtonActive" style="display: none; padding: 10px">
     <div class="input-group mb-3" style="width:250px; margin: auto;">
       <input id="friendNameSelection" type="text" class="form-control" placeholder="Add Friend" aria-describedby="button-addon2">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="addFriends">Add</button>
+      <button class="btn btn-outline-primary" type="button" id="button-addon2" @click="addFriends">Add</button>
     </div>
   </div>
 </template>
 
 <script>
-import {httpsCallable, getFunctions} from "firebase/functions";
+import {httpsCallable, getFunctions,connectFunctionsEmulator} from "firebase/functions";
 import app from "@/api/firebase";
 import {getAuth} from "firebase/auth";
 
-const functions = getFunctions(app);
+const functions = getFunctions(app)
+connectFunctionsEmulator(functions, "localhost", 5001);
 const auth = getAuth(app);
 const user = auth.currentUser;
 
