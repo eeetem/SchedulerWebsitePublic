@@ -23,8 +23,8 @@ function isAuth(to, from, next){
 }
 export default [
     {path: '/', component: loadPage('Login')},
-    {path: "/home", component: loadPage("Home"), beforeEnter: isAuth},
-    {path: "/friends", component: loadPage("Friends"), beforeEnter: isAuth},
+    {path: "/friends", component: loadPage("Home"), beforeEnter: isAuth},
+    {path: "/home", component: loadPage("Friends"), beforeEnter: isAuth},
     {path: "/create" , component: loadPage("Create")},
     {path: "/timetable" , component: loadPage("Timetable"), beforeEnter: isAuth},
     {path: "/settings" , component: loadPage("Settings"), beforeEnter: isAuth},

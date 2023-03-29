@@ -4,8 +4,9 @@ import Navbar from '../components/Navbar.vue'
 <script>
 import {getAuth} from "firebase/auth";
 import FriendsList from "@/components/FriendsList.vue";
-import {httpsCallable,getFunctions} from "firebase/functions";
+import {httpsCallable, getFunctions} from "firebase/functions";
 import app from "@/api/firebase";
+
 const functions = getFunctions(app);
 const auth = getAuth(app);
 const user = auth.currentUser
@@ -25,31 +26,35 @@ export default {
     FriendsList,
   },
   data() {
-    return{}
+    return {}
   },
   methods: {
-    getUserData(){
+    getUserData() {
       const dataRequest = httpsCallable(functions, 'GetUserData');
       dataRequest().then((result) => {
         const userdata = result.data;
         console.log(userdata);
-        document.getElementById('username').innerHTML = userdata['username'];
-        document.getElementById('pfp').src = userdata['pfpURL'];
 
-        let course = document.createElement('p');
-        course.appendChild(document.createTextNode('Course: '));
-        course.appendChild(document.createTextNode(userdata['courseCode']));
-        document.getElementById('pCourse').appendChild(course);
+        let userID = userdata['username'];
+        let userPFP = userdata['pfpURL'];
+        let courseCode = userdata['courseCode'];
+        let userYear = userdata['year'];
+        let userBio = userdata['bio'];
+        let userTimetable = userdata['timetable'];
 
-        let year = document.createElement('p');
-        year.appendChild(document.createTextNode('Year: '));
-        year.appendChild(document.createTextNode(userdata['year']));
-        document.getElementById('pYear').appendChild(year);
+        let userName = '<h3 style="padding: 10px;">' + userID + '</h3>';
+        let pfp = '<div style="padding-left: 10px;">' + '<img src = "' + userPFP + '" style="width: 80px; height: 80px; border: solid" class="rounded-circle">' + '</div>';
+        let course = '<div class="row" style="padding: 10px; display: inline-block; color:black;">' + '<strong>' + "Course:" + '</strong>' + '<div style="margin-left: 5px;">' + courseCode + '</div>' + '</div>';
+        let year = '<div class="row" style="padding: 10px; display: inline-block; color:black;">' + '<strong>' + "Year:" + '</strong>' + '<div style="margin-left: 5px;">' + userYear + '</div>' + '</div>';
+        let bio = '<div class="row" style="padding: 10px; display: inline-block; color:black;">' + '<strong>' + "Bio:" + '</strong>' + '<div style="margin-left: 5px;">' + userBio + '</div>' + '</div>';
 
-        let bio = document.createElement('p');
-        bio.appendChild(document.createTextNode('Bio: '));
-        bio.appendChild(document.createTextNode(userdata['bio']));
-        document.getElementById('pBio').appendChild(bio);
+        document.getElementById('username').innerHTML = userName;
+        document.getElementById('pfp').innerHTML = pfp;
+        document.getElementById('pCourse').innerHTML = course;
+        document.getElementById('pYear').innerHTML = year;
+        document.getElementById('pBio').innerHTML = bio;
+        document.getElementById("timetable").innerHTML = userTimetable;
+        document.getElementById("editButton").style.display = 'none';
       });
 
     },
@@ -71,56 +76,53 @@ export default {
   </header>
   <div className="container-fluid">
     <div className="row row-no-gutters">
-      <div className="col-lg-3 profile">
-        <h2>My Profile</h2>
-        <img id="pfp" src="../assets/Grannygun.jpg" className="profile_pics rounded-circle" alt="Chania">
+      <div className="col-lg-2 profile">
+        <h2 style="padding: 10px" class="display-6">My Profile</h2>
+        <div id="pfp">
+
+        </div>
         <h5 id="username"></h5>
-
-        <div id="pCourse">
-        </div>
-        <div id="pYear">
-        </div>
-        <div id="pBio">
+        <div style="padding: 10px">
+          <div id="pCourse"
+               style="border: solid; color:lightgray; border-radius: 5px;">
+          </div>
         </div>
 
-        <router-link to="/settings" className="btn btn-light" align="right">Edit</router-link><br>
+        <div style="padding: 10px">
+          <div id="pYear" style="border: solid; color:lightgray; border-radius: 5px;">
+          </div>
+        </div>
+
+        <div style="padding: 10px">
+          <div id="pBio" style="border: solid; color:lightgray; border-radius: 5px;">
+          </div>
+        </div>
+        <router-link to="/settings" className="btn btn-secondary" align="right" style=" margin-left: 10px; margin-top: 20px">Edit
+        </router-link>
+        <br>
 
 
       </div>
-      <div className="col-lg-6 whoOn" align="left">
-        <div id="app" >
-          <h2>Friends</h2>
+
+      <div className="col-lg-8 whoOn" align="left" style="padding: 20px">
+        <h3 style="padding-bottom: 10px; padding-left: 60px">Your Timetable</h3>
+        <blockquote style="padding-bottom: 10px; padding-left: 60px">-To edit your Timetable navigate to the Timetable tab</blockquote>
+        <table class="table table-striped-columns table-responsive center" id="timetable"
+               style="width: 800px; margin: auto">
+
+        </table>
+      </div>
+
+      <div className="col-lg-2 friends " align="left">
+        <h2 style="padding: 10px">Friends</h2>
+        <div id="app">
           <ul className="list-group list-group-flush">
             <div class="d-flex justify-content-center" id="spinner">
               <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
             </div>
-            <keep-alive> <friends-list onpagehide="" ></friends-list> </keep-alive>
-          </ul>
-        </div>
-
-      </div>
-      <div className="col-lg-3 friends " align="left">
-        <div>
-          <h2>Recommended Friends</h2>
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle">
-              John Murphy
-            </li>
-            <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle">
-              Mary Jane
-            </li>
-            <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle">
-              Jon Doe
-            </li>
-            <li className="list-group-item list-group-item-action"><img src="../assets/default-profile.jpg"
-                                                                        className="profile_pics rounded-circle">
-              Harry Barry
-            </li>
+            <friends-list></friends-list>
           </ul>
         </div>
       </div>
@@ -131,15 +133,14 @@ export default {
 <style scoped>
 
 .whoOn {
-  outline: 1px solid rgb(197, 197, 197);
+  border-left: 1px solid rgb(197, 197, 197);
+  padding: 10px;
+  height: 700px
 }
 
-.profile {
-  outline: 1px solid rgb(197, 197, 197);
-}
 
 .friends {
-  outline: 1px solid rgb(197, 196, 196);
+  border-left: 1px solid rgb(197, 197, 197);
 }
 
 .profile_pics {

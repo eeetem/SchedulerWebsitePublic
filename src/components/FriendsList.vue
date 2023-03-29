@@ -11,14 +11,14 @@
 
     <div id="searchInput" style="display: none; margin: auto;">
       <div style="text-align: center; padding: 10px;" class="blockquote">Add Friend</div>
-      <div class="input-group mb-3" style="width:300px; margin: auto;">
+      <div class="input-group mb-3" style="width:250px; margin: auto;">
         <input id="friendName" type="text" class="form-control" aria-describedby="button-addon2">
         <button class="btn btn-primary" type="button" id="button-addon2" @click="addFriends">Add</button>
       </div>
     </div>
   </div>
   <div id="addButtonActive" style="display: none; padding: 10px">
-    <div class="input-group mb-3" style="width:250px; margin: auto;">
+    <div class="input-group mb-3" style="width:200px; margin: auto;">
       <input id="friendNameSelection" type="text" class="form-control" placeholder="Add Friend" aria-describedby="button-addon2">
       <button class="btn btn-outline-primary" type="button" id="button-addon2" @click="addFriends">Add</button>
     </div>
@@ -31,7 +31,6 @@ import app from "@/api/firebase";
 import {getAuth} from "firebase/auth";
 
 const functions = getFunctions(app)
-connectFunctionsEmulator(functions, "localhost", 5001);
 const auth = getAuth(app);
 const user = auth.currentUser;
 

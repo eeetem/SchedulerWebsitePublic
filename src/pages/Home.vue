@@ -115,13 +115,13 @@ export default {
   <div class="container-fluid">
     <div class="row row-no-gutters">
       <div class="col-sm-4 col-md-4 col-lg-2 profile" style="height: 600px">
-        <h1>Profile</h1>
+        <h1 style="padding: 10px"></h1>
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <router-link class="nav-link active pills" aria-current="page" to="/">Home</router-link>
+            <router-link class="nav-link" aria-current="page" to="/home">Home</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/Friends">Friends</router-link>
+            <router-link class="nav-link active pills" aria-current="page" to="/friends">Friends</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/settings">Settings</router-link>
@@ -129,7 +129,8 @@ export default {
         </ul>
       </div>
       <div class="col-sm-3 col-md-3 col-lg-7 whoOn">
-        <h1 align="center">Who's Available</h1>
+        <h1 align="center" class="display-5">Who's Available</h1>
+        <blockquote style="margin-left: 10px; text-align: center">-Find your Friend's Activity here</blockquote>
         <div id="friendsOnline">
           <div class="row">
             <div class="col" style="text-align: left; padding: 20px;">
@@ -163,7 +164,7 @@ export default {
         </div>
 
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-3 profile">
+      <div class="col-sm-4 col-md-4 col-lg-3 profile" style="width: 300px; padding-left: 50px">
       <div id="app">
         <h2>Friends</h2>
         <ul className="list-group list-group-flush">

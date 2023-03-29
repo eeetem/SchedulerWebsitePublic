@@ -8,8 +8,7 @@ import Navbar from '../components/Navbar.vue'
   <body onload="loadTimetable()">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-6" style=" width: 18%; padding: 10px;">
-        <nav class="navbar">
+      <div class="col-md-3" style=" width: 230px; padding: 20px; margin-left: 5px">
           <h3>Friend's Timetable</h3>
           <div id="app">
             <div id="app">
@@ -23,19 +22,18 @@ import Navbar from '../components/Navbar.vue'
               </ul>
             </div>
           </div>
-        </nav>
       </div>
 
-      <div class="col-md-6" style="width: 56%; margin-left:30px; padding: 20px; padding: 15px; overflow-x: auto ">
+      <div class="col-md-5" style="width: 800px; margin-left:50px; padding: 20px; overflow-x: auto ">
         <table class="table table-striped-columns table-responsive center" id="timetable">
           <thead>
           <tr>
-            <th scope="col">Time</th>
-            <th scope="col">Monday</th>
-            <th scope="col">Tuesday</th>
-            <th scope="col">Wednesday</th>
-            <th scope="col">Thursday</th>
-            <th scope="col">Friday</th>
+            <th scope="col" style="width: 60px">Time</th>
+            <th scope="col" style="width: 100px">Monday</th>
+            <th scope="col" style="width: 100px">Tuesday</th>
+            <th scope="col" style="width: 100px">Wednesday</th>
+            <th scope="col" style="width: 100px">Thursday</th>
+            <th scope="col" style="width: 100px">Friday</th>
           </tr>
           </thead>
           <tbody class="table-group-divider">
@@ -119,16 +117,12 @@ import Navbar from '../components/Navbar.vue'
             <td id="18thursday"></td>
             <td id="18friday"></td>
           </tr>
-          <tr>
-            <td colspan="1" style="border: hidden">
-              <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#moduleOptions"
-                      aria-expanded="false" aria-controls="moduleOptions">Edit
-              </button>
-            </td>
-          </tr>
           </tbody>
         </table>
+        <div><button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+                     data-bs-target="#moduleOptions"
+                     aria-expanded="false" aria-controls="moduleOptions" >Edit
+        </button></div>
       </div>
 
       <div class="col-md-6" id="checkBoxes" style="width: 300px; padding-left: 10px; margin-left: 40px;">
@@ -396,8 +390,8 @@ export default {
         let timetable = JSON.stringify(userData["timetable"]);
         let moduleList = JSON.stringify(userData["moduleList"]);
         let moduleRemove = JSON.stringify(userData["moduleRemoveOptions"]);
-
-        if (timetable.length != "") {
+        console.log("L: " + timetable.length)
+        if (timetable.length > 2) {
           this.setTimetable(timetable, moduleList, moduleRemove)
         }
       });
@@ -423,7 +417,6 @@ th {
 }
 
 td{
- width: 500px;
 }
 .float-child {
   float: left;
