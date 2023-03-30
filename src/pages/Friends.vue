@@ -54,7 +54,10 @@ export default {
         document.getElementById('pYear').innerHTML = year;
         document.getElementById('pBio').innerHTML = bio;
         document.getElementById("timetable").innerHTML = userTimetable;
-        document.getElementById("editButton").style.display = 'none';
+        
+
+
+
       });
 
     },
