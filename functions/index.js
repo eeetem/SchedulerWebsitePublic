@@ -62,8 +62,7 @@ exports.UserToID = functions.https.onCall(async (data, context) => {
 
 exports.GetUserData = functions.https.onCall(async (data, context) => {
     var id = "";
-    functions.logger.debug("username: " + data.username);
-    functions.logger.debug("id: " + data.userid);
+
     if (data == null) {
         id = context.auth.uid;
     } else if (data.userid != null && data.userid !== "") {
