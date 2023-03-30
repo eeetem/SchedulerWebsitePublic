@@ -201,7 +201,7 @@ import Navbar from '../components/Navbar.vue'
             <div class="input-group mb-3">
               <div class="row">
                 <div class="col">
-                  <button id="button" class="btn btn-secondary" style="padding:7px; margin-top: 15px; width: 50px" type="button"
+                  <button id="button" class="btn btn-secondary" style="padding:7px; margin-top: 15px; width: 60px" type="button"
                           data-bs-toggle="collapse" data-bs-target="#moduleOptions"
                           aria-expanded="false" aria-controls="moduleOptions" @click="newSave" >Save
                   </button>
