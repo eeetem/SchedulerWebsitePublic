@@ -65,8 +65,12 @@ export default {
                 currentActivity = result.data.response["activity"];
                 nextActivity = result.data.response["nextactivity"];
                 nextActivityTime = result.data.response["busyIn"];
-                console.log("Data " + available);
 
+                console.log("A " + available);
+                console.log("AN " + availableNext);
+                console.log("CA " + currentActivity);
+                console.log("Na " + nextActivity);
+                console.log("NAT " + nextActivityTime);
                 let nextAvailable;
                 let nextModule;
 
@@ -79,7 +83,8 @@ export default {
                   nextAvailable = '<div style="padding-top: 20px">' + availableNext + '</div>'
                 }
                 else{
-                  nextAvailable = '<div style="padding-top: 20px">' + availableNext +":00" + '</div>'
+                  nextActivityTime++;
+                  nextAvailable = '<div style="padding-top: 20px">' + nextActivityTime +":00" + '</div>'
                 }
 
                 if(nextActivity == null){
@@ -87,7 +92,10 @@ export default {
                   nextModule = '<div style="padding-top: 20px">' + nextActivity + '</div>'
                 }
                 else{
+                  available = "Busy";
                   nextModule = '<div style="padding-top: 20px">' + nextActivity + " at " + nextActivityTime + ":00" + '</div>'
+                  nextActivityTime++;
+                  nextAvailable = '<div style="padding-top: 20px">' + nextActivityTime+":00" + '</div>'
                 }
 
                 let statusInformation = '<div style="padding-top: 20px">' + available +
