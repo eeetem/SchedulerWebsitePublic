@@ -104,16 +104,6 @@ export default {
 
     },
     async submitProfileDetails() {
-      const dataRequest = httpsCallable(functions, 'GetUserData');
-      dataRequest().then((result) => {
-        const userdata = result.data;
-        if (year.value !== 'Year') {
-          userData['year'] = document.getElementById("inputState").value;
-        } else {
-          userData['year'] = userdata['year']; // returns users original year selected.
-        }
-      });
-
       let userData = {};
       let bio = document.getElementById('bio');
       let course = document.getElementById('course');
@@ -125,7 +115,7 @@ export default {
         userData['courseCode'] = document.getElementById("course").value;
       }
       if (year.value !== 'Year') {
-        userData['year'] = document.getElementById("inputState").value;
+        userData['year'] = document.getElementById("year").value;
       }else {
         const dataRequest = httpsCallable(functions, 'GetUserData');
         dataRequest().then((result) => {
@@ -136,21 +126,18 @@ export default {
       console.log(userData);
       if(this.ImageFile != null){
       await uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
-          getDownloadURL(pfpRef).then(async (url) => {
-            await updateProfile(user, {displayName: null, photoURL: url})
-            if (year.value !== '') {
-              userData['year'] = document.getElementById("year").value;
-            }
+        getDownloadURL(pfpRef).then((url) => {
+          updateProfile(user, {displayName: null, photoURL: url})
             console.log(userData);
             if (this.ImageFile != null) {
-                uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
+              uploadBytes(pfpRef, this.ImageFile).then((snapshot) => {
                 getDownloadURL(pfpRef).then((url) => {
                   updateProfile(user, {displayName: null, photoURL: url})
-
                   userData["pfpURL"] = url;
                   const dataUpload = httpsCallable(functions, 'SubmitUserData');
                   dataUpload(userData).then((result) => {
                     console.log(result.data);
+                    location.reload();
                   });
 
                 });
@@ -160,6 +147,7 @@ export default {
               const dataUpload = httpsCallable(functions, 'SubmitUserData');
               dataUpload(userData).then((result) => {
                 console.log(result.data);
+                location.reload();
               });
             }
             document.getElementById("confirmSave").innerHTML = '<div class="alert alert-success" role="alert" style="margin-left: auto ;height: 40px; padding: 10px; text-align: center">' +
@@ -168,7 +156,6 @@ export default {
             document.getElementById("confirmSaveUser").innerHTML = '<div class="alert alert-success" role="alert" style="margin-left: auto ;height: 40px; padding: 10px; text-align: center">' +
                 "Saved" + ' </div>';
 
-            location.reload();
           })
 
 
@@ -246,7 +233,7 @@ export default {
             <div>
               <br>
               <div id="confirmSave"></div>
-              <button type="button" class="btn btn-secondary" @click="submitProfileDetails">Save</button>
+              <button type="button" class="btn btn-secondary" @click="submitUserData">Save</button>
             </div>
           </div>
         </form>

@@ -62,6 +62,7 @@ exports.UserToID = functions.https.onCall(async (data, context) => {
 
 exports.GetUserData = functions.https.onCall((data, context) => {
     var id = "";
+    functions.logger.debug("asd "+data.username);
     if(data == null){
         id = context.auth.uid;
     }else if (data.userid != null && data.userid !== ""){
@@ -87,7 +88,6 @@ exports.AddFriend = functions.https.onCall(async (data, context) => {
         functions.logger.info("not logged in!");
         return {status: 'error', code: 401, message: 'Not signed in'}
     }
-    await UsernameToId("T1nkey")
     functions.logger.info("user " + context.auth.uid + " adding" + data);
     //todo notify other user of friend request
     var response = await admin.firestore().collection('UserData').doc(data).get();
