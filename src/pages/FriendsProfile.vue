@@ -4,16 +4,18 @@ import Navbar from '../components/Navbar.vue'
 <script>
 import {getAuth} from "firebase/auth";
 import FriendsList from "@/components/FriendsList.vue";
-import {httpsCallable,getFunctions} from "firebase/functions";
+import {httpsCallable,getFunctions,connectFunctionsEmulator} from "firebase/functions";
 import app from "@/api/firebase";
 const functions = getFunctions(app);
 const auth = getAuth(app);
-const user = auth.currentUser
+const user = auth.currentUser;
+connectFunctionsEmulator(functions,"localhost",5001)
 
 export default {
   name: "app",
   created() {
-    this.getUserData(this.getUserName())
+    console.log(this.getUserName());
+    this.getUserData(this.getUserName());
     const auth = getAuth(app);
     const user = auth.currentUser;
     if (!user) {
@@ -28,9 +30,9 @@ export default {
     return{}
   },
   methods: {
-    getUserData(getUserName){
+    getUserData(username) {
       const dataRequest = httpsCallable(functions, 'GetUserData');
-      dataRequest(getUserName).then((result) => {
+      dataRequest({username: username}).then((result) => {
         const userdata = result.data;
         console.log(userdata);
         document.getElementById('username').innerHTML = userdata['username'];
@@ -50,13 +52,14 @@ export default {
         bio.appendChild(document.createTextNode('Bio: '));
         bio.appendChild(document.createTextNode(userdata['bio']));
         document.getElementById('pBio').appendChild(bio);
-      });
 
+        let timetable = document.getElementById('timetable');
+        timetable.innerHTML = userdata['timetable'];
+      });
     },
     getUserName(){
       const params = window.location.search;
       let newparams = params.replace("?","");
-      console.log(newparams);
       return newparams;
     },
     addFriend() {
@@ -66,7 +69,7 @@ export default {
     removeFriend() {
 
     }
-  },
+}
 }
 
 </script>
@@ -76,8 +79,8 @@ export default {
   </header>
   <div className="container-fluid">
     <div className="row row-no-gutters">
-      <div className="col-lg-3 profile">
-        <img id="pfp" src="../assets/Grannygun.jpg" className="profile_pics rounded-circle" alt="Chania">
+      <div className="col-lg-3">
+        <img id="pfp" src="" className="profile_pics rounded-circle">
         <h5 id="username"></h5>
 
         <div id="pCourse">
@@ -86,9 +89,12 @@ export default {
         </div>
         <div id="pBio">
         </div>
-
       </div>
-    </div>
+
+        <div class="col-lg-6" style="width: 56%; margin-left:30px; padding: 20px; padding: 15px; overflow-x: auto ">
+          <table class="table table-striped-columns table-responsive center" id="timetable"></table>
+        </div>
+  </div>
   </div>
 </template>
 
@@ -106,8 +112,8 @@ export default {
 }
 
 .profile_pics {
-  height: 75px;
-  width: 75px;
+  height: 250px;
+  width: 250px;
 }
 
 .pills {

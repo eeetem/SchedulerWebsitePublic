@@ -201,9 +201,9 @@ import Navbar from '../components/Navbar.vue'
             <div class="input-group mb-3">
               <div class="row">
                 <div class="col">
-                  <button class="btn btn-secondary" style="padding:7px; margin-top: 15px; width: 50x" type="button"
+                  <button id="button" class="btn btn-secondary" style="padding:7px; margin-top: 15px; width: 50px" type="button"
                           data-bs-toggle="collapse" data-bs-target="#moduleOptions"
-                          aria-expanded="false" aria-controls="moduleOptions" @click="newSave">Save
+                          aria-expanded="false" aria-controls="moduleOptions" @click="newSave" >Save
                   </button>
                 </div>
                 <div class="col">
@@ -379,8 +379,12 @@ export default {
       timetableSlot.style.backgroundColor = "";
       moduleListed.parentNode.removeChild(moduleListed)
       listedModule.parentNode.removeChild(listedModule)
-    }
-    ,
+    },
+    setTimetable(timetable, moduleList, moduleRemove) {
+      document.querySelector("#moduleList").innerHTML = JSON.parse(moduleList);
+      document.getElementById("selectRemove").innerHTML = JSON.parse(moduleRemove);
+      document.getElementById("timetable").innerHTML = JSON.parse(timetable);
+    },
 
     loadTimetable() {
       console.log("Loading")
@@ -395,14 +399,8 @@ export default {
           this.setTimetable(timetable, moduleList, moduleRemove)
         }
       });
-    }
-    ,
+    },
 
-    setTimetable(timetable, moduleList, moduleRemove) {
-      document.querySelector("#moduleList").innerHTML = JSON.parse(moduleList);
-      document.getElementById("selectRemove").innerHTML = JSON.parse(moduleRemove);
-      document.getElementById("timetable").innerHTML = JSON.parse(timetable);
-    }
   }
 }
 </script>
