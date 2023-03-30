@@ -75,7 +75,7 @@ export default {
                 let nextModule;
 
                 if(available == "busy"){
-                  available = currentActivity;
+                  available = "Busy";
                 }
 
                 if(availableNext == null){
@@ -83,8 +83,8 @@ export default {
                   nextAvailable = '<div style="padding-top: 20px">' + availableNext + '</div>'
                 }
                 else{
-                  nextActivityTime++;
-                  nextAvailable = '<div style="padding-top: 20px">' + nextActivityTime +":00" + '</div>'
+                  currentActivity++;
+                  nextAvailable = '<div style="padding-top: 20px">' + currentActivity +":00" + '</div>'
                 }
 
                 if(nextActivity == null){
@@ -93,9 +93,9 @@ export default {
                 }
                 else{
                   available = "Busy";
-                  nextModule = '<div style="padding-top: 20px">' + nextActivity + " at " + nextActivityTime + ":00" + '</div>'
+                  nextModule = '<div style="padding-top: 20px">' + nextActivity + " at " + nextActivity + ":00" + '</div>'
                   nextActivityTime++;
-                  nextAvailable = '<div style="padding-top: 20px">' + nextActivityTime+":00" + '</div>'
+                  nextAvailable = '<div style="padding-top: 20px">' + nextActivityTime +":00" + '</div>'
                 }
 
                 let statusInformation = '<div style="padding-top: 20px">' + available +

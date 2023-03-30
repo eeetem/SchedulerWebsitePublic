@@ -144,7 +144,7 @@ exports.UpStatus =  functions.https.onCall(async (data, context) => {
     const date = new Date();
     const hournow = date.getHours();
     const daynow = date.getDay();
-    const dayNowText = days[daynow];
+    const dayNowText = days[daynow-1];
 
     const timeNow = hournow + dayNowText
 
