@@ -60,19 +60,20 @@ exports.UserToID = functions.https.onCall(async (data, context) => {
     return q;
 });
 
-exports.GetUserData = functions.https.onCall((data, context) => {
+exports.GetUserData = functions.https.onCall(async (data, context) => {
     var id = "";
-    functions.logger.debug("asd "+data.username);
-    if(data == null){
+    functions.logger.debug("username: " + data.username);
+    functions.logger.debug("id: " + data.userid);
+    if (data == null) {
         id = context.auth.uid;
-    }else if (data.userid != null && data.userid !== ""){
+    } else if (data.userid != null && data.userid !== "") {
         id = data.userid;
-    }else if (data.username != null && data.username !== ""){
-        id = UsernameToId(data.username)
-    }else{
-    return {status: 'error', code: 401, message: 'Bad Request'}
+    } else if (data.username != null && data.username !== "") {
+        id = await UsernameToId(data.username)
+    } else {
+        return {status: 'error', code: 401, message: 'Bad Request'}
     }
-    functions.logger.info("data requested for user: !"+id);
+    functions.logger.info("data requested for user: !" + id);
 
 
     const query = admin.firestore().collection('UserData').doc(id).get().then(async r => {

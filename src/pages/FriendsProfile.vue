@@ -4,12 +4,11 @@ import Navbar from '../components/Navbar.vue'
 <script>
 import {getAuth} from "firebase/auth";
 import FriendsList from "@/components/FriendsList.vue";
-import {httpsCallable,getFunctions,connectFunctionsEmulator} from "firebase/functions";
+import {httpsCallable,getFunctions} from "firebase/functions";
 import app from "@/api/firebase";
 const functions = getFunctions(app);
 const auth = getAuth(app);
 const user = auth.currentUser;
-connectFunctionsEmulator(functions,"localhost",5001)
 
 export default {
   name: "app",
